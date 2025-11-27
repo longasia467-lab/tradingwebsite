@@ -37,7 +37,6 @@
         body {
             font-family: 'Inter', sans-serif;
             color: #334155;
-            /* Default light background, handled by Tailwind classes now */
             overflow-x: hidden;
         }
 
@@ -193,7 +192,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Video -->
     <section id="home" class="relative pt-20 pb-32 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-300">
         <div class="absolute inset-0 bg-grid opacity-100 dark:opacity-10"></div>
         <!-- Gradient Blobs -->
@@ -201,44 +200,79 @@
         <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-100 dark:bg-indigo-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob animation-delay-2000"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="max-w-4xl mx-auto text-center">
-                <div>
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="text-center lg:text-left">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-bold uppercase tracking-wide mb-6 fade-in-up">
                         <i data-lucide="check-circle" class="w-3 h-3"></i> ISO 9001:2015 Certified
                     </div>
                     
-                    <h1 class="text-5xl lg:text-7xl font-heading font-extrabold text-slate-900 dark:text-white leading-[1.1] mb-6 fade-in-up delay-100">
+                    <h1 class="text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 dark:text-white leading-[1.1] mb-6 fade-in-up delay-100">
                         Stop Gambling. <br>
                         Start <span class="text-blue-600 dark:text-blue-400">Trading.</span>
                     </h1>
                     
-                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto fade-in-up delay-200">
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0 fade-in-up delay-200">
                         Master the <strong>Gauntlet Model™</strong> and trade <span class="market-text text-slate-900 dark:text-white font-semibold">Nifty & BankNifty</span> with institutional logic. No guesswork. No noise. Just a proven mathematical edge.
                     </p>
                     
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up delay-300">
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start fade-in-up delay-300">
                         <a href="#pricing" class="btn-primary px-8 py-4 rounded-lg text-center font-bold text-base shadow-xl shadow-blue-600/20 dark:shadow-blue-900/30 flex items-center justify-center gap-2">
                             View Courses <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </a>
-                        <a href="#curriculum" class="px-8 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg font-bold text-center hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2">
+                        <a href="#home" class="px-8 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg font-bold text-center hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2">
                             <i data-lucide="play-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i> Watch Demo
                         </a>
                     </div>
                     
-                    <div class="mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-center gap-8 md:gap-12 fade-in-up delay-300">
-                        <div class="text-center">
+                    <div class="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 flex items-center justify-center lg:justify-start gap-8 fade-in-up delay-300">
+                        <div class="text-left">
                             <p class="text-3xl font-bold text-slate-900 dark:text-white font-heading">15k+</p>
                             <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Students</p>
                         </div>
-                        <div class="w-px h-10 bg-slate-200 dark:bg-slate-800 hidden sm:block"></div>
-                        <div class="text-center">
+                        <div class="w-px h-10 bg-slate-200 dark:bg-slate-800"></div>
+                        <div class="text-left">
                             <p class="text-3xl font-bold text-slate-900 dark:text-white font-heading" id="hero-profit">₹50Cr+</p>
                             <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Profits Made</p>
                         </div>
-                        <div class="w-px h-10 bg-slate-200 dark:bg-slate-800 hidden sm:block"></div>
-                        <div class="text-center">
+                        <div class="w-px h-10 bg-slate-200 dark:bg-slate-800"></div>
+                        <div class="text-left">
                             <p class="text-3xl font-bold text-slate-900 dark:text-white font-heading">4.9/5</p>
                             <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Trustpilot</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative fade-in-up delay-200">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-black aspect-video group">
+                        <!-- CLICKABLE THUMBNAIL (Links to YouTube) -->
+                        <a href="https://youtu.be/psQS2iX5N2k?si=Ws7Ppfe82Tgb-Rsi" target="_blank" class="block w-full h-full relative cursor-pointer">
+                            <!-- High Res Thumbnail -->
+                            <img src="https://img.youtube.com/vi/psQS2iX5N2k/maxresdefault.jpg" alt="Watch Trade Lords Intro" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+                            
+                            <!-- YouTube Style Play Button -->
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-20 h-20 bg-red-600/90 hover:bg-red-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(220,38,38,0.5)] group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
+                                    <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Overlay -->
+                            <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                                <p class="text-white font-bold text-sm flex items-center gap-2">
+                                    <i data-lucide="youtube" class="w-5 h-5 text-red-500"></i> Watch on YouTube
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Floating Trust Badge (Moved to bottom-left to avoid blocking controls) -->
+                    <div class="absolute -bottom-5 -left-5 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3 animate-bounce duration-[3000ms] z-20">
+                        <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="play" class="w-5 h-5 text-green-600 dark:text-green-400 fill-green-600 dark:fill-green-400"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-900 dark:text-white">Live Execution</p>
+                            <p class="text-[10px] text-slate-500 dark:text-slate-400">Watch the strategy work</p>
                         </div>
                     </div>
                 </div>
@@ -293,7 +327,7 @@
     </section>
 
     <!-- YouTube / Free Resources Section -->
-    <section class="py-24 bg-slate-50 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 transition-colors duration-300">
+    <section id="videos" class="py-24 bg-slate-50 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div class="max-w-2xl">
