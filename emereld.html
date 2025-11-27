@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emerald Tier | Trade Lords</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --emerald-glow: 0 0 30px rgba(16, 185, 129, 0.4);
+            --bg-dark: #020617;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(16, 185, 129, 0.2); /* Green tint border */
+        }
+
+        .glass-panel-dark {
+            background: rgba(2, 6, 23, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Text Gradients */
+        .text-gradient-emerald {
+            background: linear-gradient(to right, #34d399, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Ticker Animation */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 30s linear infinite;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Gem Shape Clip Path */
+        .gem-clip {
+            clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%);
+        }
+
+        /* Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .neon-btn {
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .neon-btn:hover {
+            box-shadow: var(--emerald-glow);
+        }
+
+        /* --- NEW HERO ANIMATION STYLES --- */
+        .tech-ring {
+            stroke: rgba(16, 185, 129, 0.4); 
+            stroke-width: 1;
+            fill: none;
+            stroke-dasharray: 20 10;
+            transform-origin: center;
+            transform-box: fill-box; /* Ensures rotation around center */
+            animation: spin-slow 20s linear infinite;
+        }
+        .tech-ring-reverse {
+            stroke: rgba(16, 185, 129, 0.3); 
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 50 50;
+            transform-origin: center;
+            transform-box: fill-box; /* Ensures rotation around center */
+            animation: spin-reverse 25s linear infinite;
+        }
+        .emerald-core {
+            filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.8)); 
+            transform-origin: center;
+            transform-box: fill-box; /* Ensures scaling from center */
+            animation: float-pulse 4s ease-in-out infinite;
+        }
+        .spec-connector {
+            stroke: #10b981;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            animation: draw-line 2s ease-out forwards 0.5s;
+        }
+        .spec-dot {
+            fill: #10b981;
+            opacity: 0;
+            animation: fade-in 0.5s ease-out forwards 1.5s;
+        }
+        .spec-label {
+            font-family: 'Orbitron', sans-serif;
+            fill: #10b981;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: slide-right 0.5s ease-out forwards 1.8s;
+        }
+        .spec-detail {
+            font-family: 'Rajdhani', sans-serif;
+            fill: #fff;
+            font-size: 16px;
+            opacity: 0;
+            animation: slide-right 0.5s ease-out forwards 2s;
+        }
+
+        @keyframes spin-slow { to { transform: rotate(360deg); } }
+        @keyframes spin-reverse { to { transform: rotate(-360deg); } }
+        @keyframes float-pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.6)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 35px rgba(16, 185, 129, 0.9)); }
+        }
+        @keyframes draw-line { to { stroke-dashoffset: 0; } }
+        @keyframes fade-in { to { opacity: 1; } }
+        @keyframes slide-right {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-500 selection:text-black">
+
+    <!-- Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Stock Ticker -->
+    <div class="ticker-wrap fixed top-0 z-50 h-10 flex items-center">
+        <div class="ticker text-sm font-bold tracking-widest text-slate-400">
+            <span class="mx-8 text-green-400">BTC +4.5%</span>
+            <span class="mx-8 text-red-400">ETH -1.2%</span>
+            <span class="mx-8 text-green-400">SOL +8.9%</span>
+            <span class="mx-8 text-cyan-400">TLORD +125%</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-10 w-full z-40 glass-panel border-b-0 border-t border-emerald-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <i data-lucide="gem" class="w-8 h-8 text-emerald-400 group-hover:text-white transition-colors"></i>
+                    <span class="brand-font text-2xl font-bold tracking-widest text-white">TRADE <span class="text-cyan-400">LORDS</span></span>
+                </a>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                        <span class="text-emerald-500 px-3 py-2 rounded-md text-sm font-medium border-b border-emerald-500">Emerald Tier</span>
+                        <a href="#curriculum" class="hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Curriculum</a>
+                        <a href="#enroll" class="bg-emerald-600/20 border border-emerald-500/50 hover:bg-emerald-500 hover:text-black px-6 py-2 rounded-none gem-clip text-sm font-bold transition-all">ENROLL NOW</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-20 lg:pt-52 lg:pb-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <div class="flex flex-col items-center gap-16">
+                
+                <!-- Text Content (Centered) -->
+                <div class="text-center max-w-4xl mx-auto">
+                    <div class="flex justify-center w-full mb-6">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-800 bg-emerald-900/20">
+                            <i data-lucide="hexagon" class="w-4 h-4 text-emerald-500 fill-emerald-500/20"></i>
+                            <span class="text-xs uppercase tracking-widest text-emerald-400 font-bold">Foundation Level Clearance</span>
+                        </div>
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-6 text-white">
+                        MASTER THE <br/> <span class="text-gradient-emerald">MORNING OPEN</span>
+                    </h1>
+                    
+                    <p class="text-xl text-slate-400 font-light mb-8 leading-relaxed max-w-2xl mx-auto">
+                        The market is most predictable in the first 30 minutes. The <span class="text-white font-bold">Emerald Tier</span> teaches you to extract profit between 9:15 AM and 9:45 AM, then walk away.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row justify-center gap-6 mb-12">
+                        <div class="flex items-center gap-3 text-left">
+                            <div class="w-12 h-12 rounded bg-slate-800 flex items-center justify-center border border-slate-700">
+                                <i data-lucide="clock" class="text-emerald-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-white">30 Min</div>
+                                <div class="text-xs text-slate-500 uppercase">Work Day</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 text-left">
+                            <div class="w-12 h-12 rounded bg-slate-800 flex items-center justify-center border border-slate-700">
+                                <i data-lucide="target" class="text-emerald-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-white">80% Win Rate</div>
+                                <div class="text-xs text-slate-500 uppercase">Historical Accuracy</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#enroll" class="neon-btn inline-block px-10 py-5 bg-emerald-500 text-black font-bold text-xl tracking-wider gem-clip hover:scale-105 transform transition duration-200">
+                        START YOUR JOURNEY
+                    </a>
+                </div>
+
+                <!-- Visual Content (UPDATED & FIXED EMERALD - CENTERED) -->
+                <!-- Use viewBox 0 0 600 400 to prevent clipping of text labels -->
+                <div class="relative w-full max-w-4xl flex items-center justify-center mt-8">
+                    <div class="absolute inset-0 bg-emerald-500/10 blur-[100px] rounded-full"></div>
+                    
+                    <svg viewBox="0 0 600 400" class="w-full h-auto drop-shadow-2xl">
+                        <defs>
+                            <linearGradient id="gemGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#34d399;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#065f46;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Background Rotating Rings (Centered at 300, 200) -->
+                        <g transform="translate(300, 200)">
+                             <!-- Inner group to separate rotation from translation -->
+                             <g>
+                                <circle r="140" class="tech-ring" />
+                                <circle r="180" class="tech-ring-reverse" />
+                             </g>
+                        </g>
+
+                        <!-- Central Emerald (Centered at 300, 200) - Drawn FIRST so text overlays it -->
+                        <g transform="translate(300, 200)">
+                            <!-- Animation applied to Inner Group to preserve translation -->
+                            <g class="emerald-core">
+                                <!-- Outer Shape -->
+                                <path d="M0 -70 L60 -35 L60 35 L0 70 L-60 35 L-60 -35 Z" fill="url(#gemGradient)" stroke="#a7f3d0" stroke-width="2" />
+                                <!-- Inner Facets -->
+                                <path d="M0 -70 L0 -35 M60 -35 L30 -17 M60 35 L30 17 M0 70 L0 35 M-60 35 L-30 17 M-60 -35 L-30 -17" stroke="#10b981" stroke-width="1" />
+                                <!-- Flat Top -->
+                                <path d="M0 -35 L30 -17 L30 17 L0 35 L-30 17 L-30 -17 Z" fill="rgba(255, 255, 255, 0.1)" stroke="#a7f3d0" stroke-width="2" />
+                            </g>
+                        </g>
+
+                        <!-- Emerald Text - Drawn AFTER to overlay -->
+                        <text x="300" y="205" text-anchor="middle" fill="#fff" font-family="Orbitron" font-weight="900" font-size="14" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8); pointer-events: none;">EMERALD</text>
+
+                        <!-- Spec Line 1 (Top Right - Profit) -->
+                        <path d="M330 180 L400 130 L480 130" class="spec-connector" />
+                        <circle cx="480" cy="130" r="4" fill="#10b981" class="spec-dot" />
+                        <text x="490" y="125" class="spec-label">OBJECTIVE</text>
+                        <text x="490" y="145" class="spec-detail">MAX PROFIT</text>
+
+                        <!-- Spec Line 2 (Right Middle - Accuracy) -->
+                        <path d="M360 200 L420 200 L480 200" class="spec-connector" style="animation-delay: 0.8s" />
+                        <circle cx="480" cy="200" r="4" fill="#10b981" class="spec-dot" style="animation-delay: 1.8s" />
+                        <text x="490" y="195" class="spec-label" style="animation-delay: 2.1s">PRECISION</text>
+                        <text x="490" y="215" class="spec-detail" style="animation-delay: 2.3s">SNIPER ACCURACY</text>
+
+                        <!-- Spec Line 3 (Bottom Right - Time) -->
+                        <path d="M330 220 L400 270 L480 270" class="spec-connector" style="animation-delay: 1.1s" />
+                        <circle cx="480" cy="270" r="4" fill="#10b981" class="spec-dot" style="animation-delay: 2.1s" />
+                        <text x="490" y="265" class="spec-label" style="animation-delay: 2.4s">TIMEFRAME</text>
+                        <text x="490" y="285" class="spec-detail" style="animation-delay: 2.6s">30 MIN SESSION</text>
+
+                         <!-- Spec Line 4 (Left Side - Risk) -->
+                         <path d="M240 200 L180 200 L120 200" class="spec-connector" style="animation-delay: 1.4s" />
+                         <circle cx="120" cy="200" r="4" fill="#10b981" class="spec-dot" style="animation-delay: 2.4s" />
+                         <text x="110" y="195" text-anchor="end" class="spec-label" style="animation-delay: 2.7s">RISK RATIO</text>
+                         <text x="110" y="215" text-anchor="end" class="spec-detail" style="animation-delay: 2.9s">1:3 MINIMUM</text>
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy Breakdown -->
+    <section class="py-20 bg-slate-900/50 border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">THE <span class="text-emerald-400">ARMORY</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">You get immediate access to two institutional-grade strategies and our custom indicators.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Strategy 1 -->
+                <div class="p-8 rounded-lg border border-slate-700 bg-slate-900 hover:border-emerald-500 transition duration-300 group">
+                    <div class="w-12 h-12 bg-emerald-900/30 border border-emerald-500/50 flex items-center justify-center mb-6 group-hover:scale-110 transition duration-300">
+                        <span class="text-xl font-bold text-emerald-400">01</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">BANK NIFTY SNIPER</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Execute with surgical precision during the market's most volatile window. This strategy utilizes advanced price action to align your entries with institutional momentum in Bank Nifty, allowing you to capture rapid moves while minimizing exposure time.
+                    </p>
+                    <ul class="text-sm text-slate-500 space-y-2">
+                        <li class="flex items-center"><i data-lucide="check" class="w-3 h-3 text-emerald-500 mr-2"></i> Works on Nifty & BankNifty</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-3 h-3 text-emerald-500 mr-2"></i> 1:3 Risk Reward Ratio</li>
+                    </ul>
+                </div>
+
+                <!-- Strategy 2 -->
+                <div class="p-8 rounded-lg border border-slate-700 bg-slate-900 hover:border-emerald-500 transition duration-300 group">
+                    <div class="w-12 h-12 bg-emerald-900/30 border border-emerald-500/50 flex items-center justify-center mb-6 group-hover:scale-110 transition duration-300">
+                        <span class="text-xl font-bold text-emerald-400">02</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">THE HIDDEN SPY</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Detect the unseen moves of smart money. This custom indicator scans for volume divergences and hidden momentum shifts that standard candles miss, revealing high-probability reversals before the broader market reacts.
+                    </p>
+                    <ul class="text-sm text-slate-500 space-y-2">
+                        <li class="flex items-center"><i data-lucide="check" class="w-3 h-3 text-emerald-500 mr-2"></i> Non-repainting signals</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-3 h-3 text-emerald-500 mr-2"></i> Alerts directly to phone</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum -->
+    <section id="curriculum" class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-10 text-center">MISSION <span class="text-emerald-400">LOG</span></h2>
+            
+            <div class="space-y-4">
+                <!-- Module 1 -->
+                <div class="glass-panel p-6 rounded-lg">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1"><i data-lucide="play-circle" class="text-emerald-400"></i></div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-white">Module 1: Terminal Setup & Psychology</h4>
+                            <p class="text-sm text-slate-400 mt-1">Configuring your charts like a pro. Understanding the "Sniper Mindset" vs the "Machine Gunner".</p>
+                        </div>
+                        <span class="text-xs text-slate-500 border border-slate-700 px-2 py-1 rounded">45 Mins</span>
+                    </div>
+                </div>
+                
+                <!-- Module 2 -->
+                <div class="glass-panel p-6 rounded-lg">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1"><i data-lucide="crosshair" class="text-emerald-400"></i></div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-white">Module 2: BANK NIFTY SNIPER Setup</h4>
+                            <p class="text-sm text-slate-400 mt-1">Step-by-step rules for entry, stop-loss placement, and target booking. Live examples included.</p>
+                        </div>
+                        <span class="text-xs text-slate-500 border border-slate-700 px-2 py-1 rounded">90 Mins</span>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="glass-panel p-6 rounded-lg">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1"><i data-lucide="activity" class="text-emerald-400"></i></div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-white">Module 3: Deploying THE HIDDEN SPY</h4>
+                            <p class="text-sm text-slate-400 mt-1">How to access and install our private script on TradingView. Setting up automated alerts.</p>
+                        </div>
+                        <span class="text-xs text-slate-500 border border-slate-700 px-2 py-1 rounded">30 Mins</span>
+                    </div>
+                </div>
+
+                <!-- Module 4 -->
+                <div class="glass-panel p-6 rounded-lg border-l-4 border-l-emerald-500">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1"><i data-lucide="trophy" class="text-emerald-400"></i></div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-white">Module 4: Live Execution Drills</h4>
+                            <p class="text-sm text-slate-400 mt-1">Watch the mentor take trades live using the Emerald system. Unedited wins and losses.</p>
+                        </div>
+                        <span class="text-xs text-slate-500 border border-slate-700 px-2 py-1 rounded">120 Mins</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing / Enrollment -->
+    <section id="enroll" class="py-20 bg-emerald-900/10 border-t border-emerald-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-6">SECURE YOUR <span class="text-emerald-400">SEAT</span></h2>
+            
+            <div class="max-w-lg mx-auto glass-panel p-10 border border-emerald-500 relative overflow-hidden">
+                <!-- Sale Tag -->
+                <div class="absolute top-5 right-[-35px] rotate-45 bg-red-600 text-white text-xs font-bold px-10 py-1 shadow-lg">
+                    LIMITED
+                </div>
+
+                <div class="text-sm text-emerald-400 uppercase tracking-widest font-bold mb-2">Emerald Access Pass</div>
+                <div class="flex justify-center items-end gap-2 mb-6">
+                    <span class="text-5xl font-black text-white">₹5,999</span>
+                    <span class="text-slate-500 line-through mb-2">₹9,999</span>
+                </div>
+
+                <ul class="text-left space-y-4 mb-8 border-t border-b border-slate-700 py-6">
+                    <li class="flex items-center text-slate-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 mr-3"></i> Full Video Course Access
+                    </li>
+                    <li class="flex items-center text-slate-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 mr-3"></i> 6 Month Indicator Access
+                    </li>
+                    <li class="flex items-center text-slate-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 mr-3"></i> Private Discord "Green Room"
+                    </li>
+                    <li class="flex items-center text-slate-300">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 mr-3"></i> Weekly Q&A Sessions
+                    </li>
+                </ul>
+
+                <button class="w-full neon-btn py-4 bg-emerald-500 text-black font-black text-lg uppercase tracking-widest gem-clip hover:bg-white transition-all">
+                    Initialize Payment
+                </button>
+                <p class="text-xs text-slate-500 mt-4">Secure 256-bit SSL Encrypted Payment. Instant Access.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Comments / Field Reports -->
+    <section class="py-24 relative overflow-hidden bg-slate-950 border-t border-slate-900">
+        <!-- Background elements -->
+        <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-emerald-900/10 via-slate-950 to-black pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">FIELD <span class="text-emerald-400">REPORTS</span></h2>
+                <p class="text-slate-400">Verified intel from operatives in the field.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Comment 1 -->
+                <div class="glass-panel p-8 rounded-lg border-t border-emerald-500/30 hover:bg-slate-900/80 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 border border-emerald-500/20 flex items-center justify-center font-bold text-emerald-400 text-sm">DK</div>
+                            <div>
+                                <div class="text-white font-bold text-sm">Devansh K.</div>
+                                <div class="text-xs text-slate-500">Verified Member</div>
+                            </div>
+                        </div>
+                        <div class="flex text-emerald-500">
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                        "I used to stare at charts all day losing money. The <span class="text-emerald-400 font-bold">Bank Nifty Sniper</span> gave me my life back. 30 minutes, 2 trades, and I'm out. Recovered the course fee in my first week."
+                    </p>
+                    <div class="text-xs text-slate-600 font-mono pt-4 border-t border-slate-800">
+                        Strategy: BN Sniper • P&L: +12% this month
+                    </div>
+                </div>
+
+                <!-- Comment 2 -->
+                <div class="glass-panel p-8 rounded-lg border-t border-emerald-500/30 hover:bg-slate-900/80 transition-all duration-300 md:-translate-y-4">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 border border-emerald-500/20 flex items-center justify-center font-bold text-emerald-400 text-sm">RS</div>
+                            <div>
+                                <div class="text-white font-bold text-sm">Rahul S.</div>
+                                <div class="text-xs text-slate-500">Verified Member</div>
+                            </div>
+                        </div>
+                        <div class="flex text-emerald-500">
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                        "The <span class="text-emerald-400 font-bold">Hidden Spy indicator</span> is almost unfair. It painted a 'Sell' right at the top yesterday when everyone else was buying the breakout. The logic behind it is solid."
+                    </p>
+                    <div class="text-xs text-slate-600 font-mono pt-4 border-t border-slate-800">
+                        Tool: Hidden Spy • Status: Profitable
+                    </div>
+                </div>
+
+                <!-- Comment 3 -->
+                <div class="glass-panel p-8 rounded-lg border-t border-emerald-500/30 hover:bg-slate-900/80 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 border border-emerald-500/20 flex items-center justify-center font-bold text-emerald-400 text-sm">AM</div>
+                            <div>
+                                <div class="text-white font-bold text-sm">Ananya M.</div>
+                                <div class="text-xs text-slate-500">Verified Member</div>
+                            </div>
+                        </div>
+                        <div class="flex text-emerald-500">
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-emerald-500"></i>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                        "I was skeptical about the psychology part, but Module 1 fixed my FOMO issues. The community in the <span class="text-emerald-400 font-bold">Green Room</span> is very supportive. Best investment for beginners."
+                    </p>
+                    <div class="text-xs text-slate-600 font-mono pt-4 border-t border-slate-800">
+                        Focus: Psychology • Win Rate: 78%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Same as index) -->
+    <footer class="border-t border-slate-800 bg-black pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i data-lucide="gem" class="w-6 h-6 text-emerald-400"></i>
+                        <span class="brand-font text-xl font-bold text-white">TRADE <span class="text-cyan-400">LORDS</span></span>
+                    </div>
+                    <p class="text-slate-500 max-w-sm">
+                        The Emerald Tier is the first step in the legacy. Master the basics, fund your account, and prepare for ascension.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Links</h4>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li><a href="index.html" class="hover:text-emerald-400 transition-colors">Home</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-colors">Support</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-colors">Login</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Legal</h4>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li><a href="#" class="hover:text-emerald-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-600 text-sm">
+                <p>&copy; 2024 Trade Lords Inc. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <i data-lucide="twitter" class="w-5 h-5 hover:text-white cursor-pointer transition-colors"></i>
+                    <i data-lucide="instagram" class="w-5 h-5 hover:text-white cursor-pointer transition-colors"></i>
+                    <i data-lucide="youtube" class="w-5 h-5 hover:text-white cursor-pointer transition-colors"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // Simplified Green Particle System for this page
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vy = (Math.random() * -0.5) - 0.2; // Move Upwards only
+                this.size = Math.random() * 20 + 5;
+                this.alpha = Math.random() * 0.1;
+            }
+            update() {
+                this.y += this.vy;
+                if (this.y < -50) this.y = height + 50;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(16, 185, 129, ${this.alpha})`; // Only Green
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for(let i=0; i<30; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => { resize(); init(); });
+        resize(); init(); animate();
+    </script>
+</body>
+</html>
