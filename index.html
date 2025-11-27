@@ -3,513 +3,677 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trade Lords | India's Premier Trading Academy</title>
+    <title>Trade Lords | Professional Trading Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#1e293b',
+                            950: '#020617',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Professional Fonts: Poppins (Headings) & Open Sans (Body) - Standard for Indian EdTech -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Modern Tech/Corporate Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --primary: #1e3a8a; /* Royal Blue */
-            --primary-dark: #172554;
-            --secondary: #f59e0b; /* Professional Gold/Amber for accents */
-            --text-main: #1e293b;
-            --text-light: #64748b;
-            --bg-light: #f8fafc;
+            --primary: #2563EB; /* Royal Blue */
+            --primary-dark: #1E40AF;
+            --secondary: #0F172A; /* Slate 900 */
+            --accent: #F59E0B; /* Trustworthy Amber */
+            --bg-light: #F8FAFC;
         }
 
         body {
-            font-family: 'Open Sans', sans-serif;
-            color: var(--text-main);
-            background-color: white;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            /* Default light background, handled by Tailwind classes now */
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4, .font-heading {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* Professional Shadows */
-        .card-shadow {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        /* Modern Gradient Button */
+        .btn-primary {
+            background: #2563EB;
+            color: white;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary:hover {
+            background: #1D4ED8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Card Hover Effects */
+        .hover-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #E2E8F0;
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #CBD5E1;
         }
         
-        .card-shadow:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: translateY(-5px);
+        /* Dark Mode Card Overrides */
+        .dark .hover-card {
+            border-color: #1e293b;
+            background-color: #0f172a;
+        }
+        .dark .hover-card:hover {
+            border-color: #334155;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
-        /* Gradient Text for Impact */
-        .text-gradient {
-            background: linear-gradient(to right, #1e3a8a, #2563eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Subtle Background Grid */
+        .bg-grid {
+            background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
+            linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .dark .bg-grid {
+            background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
+            linear-gradient(to bottom, #1e293b 1px, transparent 1px);
         }
 
-        /* WhatsApp Float */
         .whatsapp-float {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background-color: #25d366;
-            color: white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 3px #999;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            z-index: 50;
             transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
         }
-        .whatsapp-float:hover {
-            transform: scale(1.1);
+        .whatsapp-float:hover { transform: scale(1.1); }
+        
+        /* Smooth Fade In */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        
+        /* Market Switcher Styles */
+        .market-toggle {
+            background: #F1F5F9;
+            padding: 4px;
+            border-radius: 8px;
+            display: inline-flex;
+            gap: 4px;
+        }
+        .dark .market-toggle {
+            background: #1e293b;
+        }
+        .market-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748B;
+            transition: all 0.2s ease;
+        }
+        .market-btn.active {
+            background: #ffffff;
+            color: #2563EB;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .dark .market-btn {
+            color: #94a3b8;
+        }
+        .dark .market-btn.active {
+            background: #334155;
+            color: #60a5fa;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
     </style>
 </head>
-<body class="antialiased bg-slate-50">
+<body class="antialiased bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 transition-colors duration-300">
 
-    <!-- Top Bar (Standard for Trust) -->
-    <div class="bg-blue-900 text-white py-2 text-sm hidden md:block">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div class="flex items-center space-x-6">
-                <span class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> +91 98765 43210</span>
-                <span class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> support@tradelords.in</span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <a href="#" class="hover:text-blue-200">Login</a>
-                <span>|</span>
-                <a href="#" class="hover:text-blue-200">Register</a>
-                <div class="flex space-x-3 ml-4 border-l border-blue-700 pl-4">
-                    <i data-lucide="facebook" class="w-4 h-4 cursor-pointer"></i>
-                    <i data-lucide="youtube" class="w-4 h-4 cursor-pointer"></i>
-                    <i data-lucide="instagram" class="w-4 h-4 cursor-pointer"></i>
-                </div>
-            </div>
-        </div>
+    <!-- Top Announcement Bar -->
+    <div class="bg-slate-900 dark:bg-black text-slate-300 py-2 text-xs font-medium text-center border-b border-slate-800 dark:border-slate-900">
+        <span class="inline-block animate-pulse w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+        Admissions Open for New Batch: <span class="text-white font-bold">Starts Monday</span> • Limited Seats Available
     </div>
 
-    <!-- Navigation -->
-    <nav class="sticky top-0 w-full z-50 bg-white shadow-md border-b border-slate-100">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20">
-                <div class="flex items-center">
-                    <div class="flex items-center gap-2">
-                        <!-- Simple Professional Logo -->
-                        <div class="bg-blue-900 p-2 rounded">
-                            <i data-lucide="bar-chart-2" class="w-6 h-6 text-white"></i>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="font-heading font-bold text-xl text-slate-900 leading-none tracking-tight">TRADE LORDS</span>
-                            <span class="text-[10px] text-slate-500 font-medium tracking-widest uppercase">Academy of Finance</span>
-                        </div>
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-600/20">
+                        <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span class="font-heading font-bold text-xl text-slate-900 dark:text-white leading-none block">TRADE LORDS</span>
+                        <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block">Academy</span>
                     </div>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="font-medium text-slate-600 hover:text-blue-700 transition-colors">Home</a>
-                    <a href="#about" class="font-medium text-slate-600 hover:text-blue-700 transition-colors">About Us</a>
-                    <a href="#courses" class="font-medium text-slate-600 hover:text-blue-700 transition-colors">Courses</a>
-                    <a href="#reviews" class="font-medium text-slate-600 hover:text-blue-700 transition-colors">Success Stories</a>
-                    <a href="#contact" class="bg-blue-700 text-white px-6 py-2.5 rounded font-semibold hover:bg-blue-800 transition-colors shadow-lg shadow-blue-900/20">Enroll Now</a>
+                <div class="hidden md:flex items-center gap-6">
+                    <!-- Market Toggle Switch -->
+                    <div class="market-toggle mr-4 transition-colors duration-300">
+                        <button class="market-btn active" id="btn-indian" onclick="switchMarket('indian')">🇮🇳 Indian</button>
+                        <button class="market-btn" id="btn-forex" onclick="switchMarket('forex')">🌎 Forex</button>
+                    </div>
+
+                    <a href="#home" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a>
+                    <a href="#curriculum" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Curriculum</a>
+                    <a href="#pricing" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Pricing</a>
+                    <a href="#contact" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-blue-600/20 dark:shadow-blue-900/30">
+                        Get Started
+                    </a>
                 </div>
 
-                <div class="flex items-center md:hidden">
-                    <button class="text-slate-600 p-2">
-                        <i data-lucide="menu" class="w-6 h-6"></i>
-                    </button>
-                </div>
+                <button class="md:hidden text-slate-700 dark:text-slate-200">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="relative bg-white pt-16 pb-20 lg:pt-24 lg:pb-28 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                
-                <div class="relative z-10">
-                    <div class="inline-block px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wide mb-6">
-                        ★ ISO 9001:2015 Certified Institute
+    <section id="home" class="relative pt-20 pb-32 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-300">
+        <div class="absolute inset-0 bg-grid opacity-100 dark:opacity-10"></div>
+        <!-- Gradient Blobs -->
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-100 dark:bg-indigo-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob animation-delay-2000"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-bold uppercase tracking-wide mb-6 fade-in-up">
+                        <i data-lucide="check-circle" class="w-3 h-3"></i> ISO 9001:2015 Certified
                     </div>
-                    <h1 class="text-4xl lg:text-6xl font-extrabold text-slate-900 leading-tight mb-6">
-                        Systematic Trading <br>
-                        <span class="text-blue-700">Simplified.</span>
+                    
+                    <h1 class="text-5xl lg:text-7xl font-heading font-extrabold text-slate-900 dark:text-white leading-[1.1] mb-6 fade-in-up delay-100">
+                        Stop Gambling. <br>
+                        Start <span class="text-blue-600 dark:text-blue-400">Trading.</span>
                     </h1>
-                    <p class="text-lg text-slate-600 mb-8 leading-relaxed max-w-lg">
-                        Stop gambling. Start trading with logic. Join India's fastest-growing community of disciplined traders using our proprietary <strong>Gauntlet Model</strong> and Algo systems.
+                    
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto fade-in-up delay-200">
+                        Master the <strong>Gauntlet Model™</strong> and trade <span class="market-text text-slate-900 dark:text-white font-semibold">Nifty & BankNifty</span> with institutional logic. No guesswork. No noise. Just a proven mathematical edge.
                     </p>
                     
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#courses" class="px-8 py-4 bg-blue-700 text-white rounded font-bold text-center hover:bg-blue-800 transition shadow-xl shadow-blue-200">
-                            Explore Courses
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up delay-300">
+                        <a href="#pricing" class="btn-primary px-8 py-4 rounded-lg text-center font-bold text-base shadow-xl shadow-blue-600/20 dark:shadow-blue-900/30 flex items-center justify-center gap-2">
+                            View Courses <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </a>
-                        <a href="#about" class="px-8 py-4 bg-white text-slate-700 border border-slate-300 rounded font-bold text-center hover:bg-slate-50 transition flex items-center justify-center gap-2">
-                            <i data-lucide="play-circle" class="w-5 h-5"></i> Watch Demo
+                        <a href="#curriculum" class="px-8 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg font-bold text-center hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2">
+                            <i data-lucide="play-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i> Watch Demo
                         </a>
                     </div>
-
-                    <div class="mt-10 flex items-center gap-6 text-sm text-slate-500 font-medium">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i> Lifetime Support
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i> Verified Strategies
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Professional Hero Image -->
-                <div class="relative">
-                    <div class="absolute -top-10 -right-10 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
-                    <div class="absolute -bottom-10 -left-10 w-72 h-72 bg-yellow-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"></div>
                     
-                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-                        <!-- Using a professional stock-like image for trading/finance -->
-                        <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=2070&auto=format&fit=crop" alt="Professional Trading Setup" class="w-full h-auto object-cover">
-                        
-                        <!-- Floating Card Stats -->
-                        <div class="absolute bottom-6 left-6 bg-white p-4 rounded-lg shadow-lg border border-slate-100 max-w-xs">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="p-2 bg-green-100 rounded-full text-green-600">
-                                    <i data-lucide="trending-up" class="w-5 h-5"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-slate-500 font-semibold uppercase">Avg Student ROI</p>
-                                    <p class="text-lg font-bold text-slate-900">18.5% / Month</p>
-                                </div>
-                            </div>
+                    <div class="mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-center gap-8 md:gap-12 fade-in-up delay-300">
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-slate-900 dark:text-white font-heading">15k+</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Students</p>
+                        </div>
+                        <div class="w-px h-10 bg-slate-200 dark:bg-slate-800 hidden sm:block"></div>
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-slate-900 dark:text-white font-heading" id="hero-profit">₹50Cr+</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Profits Made</p>
+                        </div>
+                        <div class="w-px h-10 bg-slate-200 dark:bg-slate-800 hidden sm:block"></div>
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-slate-900 dark:text-white font-heading">4.9/5</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Trustpilot</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Trust Stats Strip -->
-    <section class="bg-slate-900 py-12 text-white border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-700">
-                <div>
-                    <div class="text-4xl font-bold text-blue-400 mb-1">15k+</div>
-                    <div class="text-sm text-slate-400 font-medium uppercase tracking-wider">Students Enrolled</div>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-blue-400 mb-1">4.8/5</div>
-                    <div class="text-sm text-slate-400 font-medium uppercase tracking-wider">Trustpilot Rating</div>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-blue-400 mb-1">₹50Cr+</div>
-                    <div class="text-sm text-slate-400 font-medium uppercase tracking-wider">Community Profits</div>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-blue-400 mb-1">500+</div>
-                    <div class="text-sm text-slate-400 font-medium uppercase tracking-wider">Live Sessions</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Why Choose Us -->
-    <section id="about" class="py-20 bg-white">
+    <section class="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4 font-heading">Why <span class="text-blue-700">Trade Lords?</span></h2>
-                <p class="text-slate-600">We don't sell dreams. We teach systems. Our curriculum is designed for the modern Indian market, focusing on capital protection and consistent growth.</p>
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-widest mb-2 block">Our Methodology</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">Why <span class="text-blue-600 dark:text-blue-400">Trade Lords?</span></h2>
+                <p class="text-slate-600 dark:text-slate-400">Most courses sell dreams. We sell systems. Our curriculum is built on three pillars of professional trading.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="bg-slate-50 p-8 rounded-xl border border-slate-100 hover:border-blue-200 transition text-center group">
-                    <div class="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 transition duration-300">
-                        <i data-lucide="clock" class="w-8 h-8 text-blue-700 group-hover:text-white transition duration-300"></i>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="hover-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800">
+                    <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-xl shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-700">
+                        <i data-lucide="clock" class="w-7 h-7 text-blue-600 dark:text-blue-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">30-Min Morning Setup</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">Perfect for working professionals. Execute our specific strategy within the first 30 minutes of market opening.</p>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">30-Min Morning Setup</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Perfect for professionals. Our Emerald strategy requires only the first 30 minutes of market open. Get in, take profit, get out.
+                    </p>
                 </div>
 
-                <div class="bg-slate-50 p-8 rounded-xl border border-slate-100 hover:border-blue-200 transition text-center group">
-                    <div class="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 transition duration-300">
-                        <i data-lucide="cpu" class="w-8 h-8 text-blue-700 group-hover:text-white transition duration-300"></i>
+                <!-- Feature 2 -->
+                <div class="hover-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800">
+                    <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-xl shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-700">
+                        <i data-lucide="shield" class="w-7 h-7 text-blue-600 dark:text-blue-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Gauntlet AI Model</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">Access our proprietary Gauntlet Model designed to accelerate capital growth by 10x using data-driven position sizing.</p>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">The Gauntlet Model</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Our proprietary position-sizing algorithm designed to protect capital during drawdowns and accelerate growth during winning streaks.
+                    </p>
                 </div>
 
-                <div class="bg-slate-50 p-8 rounded-xl border border-slate-100 hover:border-blue-200 transition text-center group">
-                    <div class="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 transition duration-300">
-                        <i data-lucide="users" class="w-8 h-8 text-blue-700 group-hover:text-white transition duration-300"></i>
+                <!-- Feature 3 -->
+                <div class="hover-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800">
+                    <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-xl shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-700">
+                        <i data-lucide="users" class="w-7 h-7 text-blue-600 dark:text-blue-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Sunday Mentorship</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">Weekly 1-on-1 guidance to review your trades. We hold your hand from 1 Lakh capital to your 1 Cr goal.</p>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">Sunday Mentorship</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        We don't leave you alone. Every Sunday, join our live 1-on-1 mentorship calls to review your trades and fix mistakes.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Courses Section -->
-    <section id="courses" class="py-24 bg-slate-50 border-t border-slate-200">
+    <!-- YouTube / Free Resources Section -->
+    <section class="py-24 bg-slate-50 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="text-blue-600 font-bold text-sm uppercase tracking-widest mb-2 block">Our Programs</span>
-                <h2 class="text-4xl font-bold text-slate-900 font-heading">Choose Your <span class="text-blue-700">Learning Path</span></h2>
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div class="max-w-2xl">
+                    <span class="text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-widest mb-2 block">Inside The Trade Room</span>
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">Watch Us <span class="text-blue-600 dark:text-blue-400">Live</span></h2>
+                    <p class="text-slate-600 dark:text-slate-400">Don't just take our word for it. Watch our mentors execute live trades and break down complex market logic.</p>
+                </div>
+                <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-red-600 hover:text-red-700 transition">
+                    <i data-lucide="youtube" class="w-5 h-5"></i> Subscribe to Channel
+                </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Video 1 -->
+                <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700">
+                    <div class="aspect-video w-full bg-slate-100 dark:bg-slate-900 relative group">
+                        <!-- Placeholder for YouTube Embed -->
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="absolute inset-0"></iframe>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold uppercase rounded">Live Trade</span>
+                            <span class="text-slate-400 text-xs">14 mins</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 dark:text-white mb-2 line-clamp-2" id="video-title-1">How I Made ₹50,000 in 15 Minutes using the Morning Setup</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">A live breakdown of the Nifty 50 gap-up strategy execution.</p>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700">
+                    <div class="aspect-video w-full bg-slate-100 dark:bg-slate-900 relative">
+                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/M7lc1UVf-VE?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="absolute inset-0"></iframe>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-bold uppercase rounded">Tutorial</span>
+                            <span class="text-slate-400 text-xs">22 mins</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 dark:text-white mb-2 line-clamp-2">The Gauntlet Model Explained: Position Sizing Secrets</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Why fixed risk % is killing your gains. Learn dynamic sizing.</p>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700">
+                    <div class="aspect-video w-full bg-slate-100 dark:bg-slate-900 relative">
+                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/LXb3EKWsInQ?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="absolute inset-0"></iframe>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold uppercase rounded">Psychology</span>
+                            <span class="text-slate-400 text-xs">18 mins</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 dark:text-white mb-2 line-clamp-2">Stop Revenge Trading: 3 Rules to Control Emotions</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">The psychological framework used by institutional traders.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 max-w-2xl mx-auto">
+                <span class="text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-widest mb-2 block">Investment Tiers</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">Choose Your <span class="text-blue-600 dark:text-blue-400">Trading Path</span></h2>
+                <p class="text-slate-600 dark:text-slate-400">Transparent pricing. Lifetime access to the academy. No monthly fees.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 items-start">
                 
-                <!-- EMERALD PLAN -->
-                <div class="bg-white rounded-2xl p-8 border border-slate-200 card-shadow flex flex-col relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-2 bg-emerald-500"></div>
-                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Emerald Plan</h3>
-                    <p class="text-slate-500 text-sm mb-6">For Beginners & Office Goers</p>
-                    
-                    <div class="mb-8 pb-8 border-b border-slate-100">
-                        <div class="flex items-baseline">
-                            <span class="text-4xl font-extrabold text-slate-900">₹5,999</span>
-                            <span class="text-slate-500 ml-2">/ lifetime</span>
+                <!-- EMERALD (Standard) -->
+                <div class="group relative bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/10 flex flex-col h-full">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading">Emerald</h3>
+                        <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl text-emerald-600 dark:text-emerald-400">
+                            <i data-lucide="gem" class="w-6 h-6"></i>
                         </div>
-                        <p class="text-green-600 text-sm font-semibold mt-2">Includes GST</p>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 h-10">Perfect for beginners and working professionals who need a simple system.</p>
+                    
+                    <div class="mb-6">
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-4xl font-extrabold text-slate-900 dark:text-white price-emerald">₹5,999</span>
+                            <span class="text-slate-500 dark:text-slate-400 text-sm font-medium">/ lifetime</span>
+                        </div>
                     </div>
 
-                    <ul class="space-y-4 mb-8 flex-1">
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0"></i>
-                            2 Core Strategies (Swing/Intraday)
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0"></i>
-                            2 Custom Indicators
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0"></i>
-                            <strong>30-Min Morning Setup</strong> (1-3 Trades)
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0"></i>
-                            80%+ Accuracy Framework
-                        </li>
-                    </ul>
-                    
-                    <button class="w-full py-3 border-2 border-emerald-600 text-emerald-700 font-bold rounded-lg hover:bg-emerald-50 transition">Enroll in Emerald</button>
+                    <a href="#contact" class="block w-full py-4 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all text-center mb-8 shadow-lg shadow-emerald-600/20">
+                        Get Started
+                    </a>
+
+                    <div class="space-y-4 mt-auto">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">What's Included</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400"></i></div>
+                                2 Core Strategies (Swing/Intraday)
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400"></i></div>
+                                <strong>30-Min Morning Setup</strong>
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400"></i></div>
+                                Algo Bot Access
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400"></i></div>
+                                Community Access
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                <!-- RUBY PLAN -->
-                <div class="bg-white rounded-2xl p-8 border border-red-100 card-shadow flex flex-col relative overflow-hidden transform md:-translate-y-4 ring-2 ring-red-500/20">
-                    <div class="absolute top-0 left-0 w-full h-2 bg-red-600"></div>
-                    <div class="absolute top-4 right-4 bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">MOST POPULAR</div>
-                    
-                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Ruby Plan</h3>
-                    <p class="text-slate-500 text-sm mb-6">For Serious Scalpers</p>
-                    
-                    <div class="mb-8 pb-8 border-b border-slate-100">
-                        <div class="flex items-baseline">
-                            <span class="text-4xl font-extrabold text-slate-900">₹12,999</span>
-                            <span class="text-slate-500 ml-2">/ lifetime</span>
-                        </div>
-                        <p class="text-green-600 text-sm font-semibold mt-2">Includes GST</p>
+                <!-- RUBY (Premium/Popular) -->
+                <div class="group relative bg-white dark:bg-slate-900 rounded-3xl p-8 border-2 border-red-100 dark:border-red-900/30 hover:border-red-500 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/10 flex flex-col h-full transform lg:-translate-y-4 z-10">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide shadow-lg whitespace-nowrap">
+                        Most Popular
                     </div>
 
-                    <ul class="space-y-4 mb-8 flex-1">
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-red-500 shrink-0"></i>
-                            5 Advanced Strategies
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-red-500 shrink-0"></i>
-                            <strong>The Gauntlet Model</strong> (10x Growth)
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-red-500 shrink-0"></i>
-                            Professional Trading Journal
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-red-500 shrink-0"></i>
-                            Psychology & Risk Mastery
-                        </li>
-                    </ul>
+                    <div class="flex justify-between items-center mb-4 mt-2">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading">Ruby</h3>
+                        <div class="p-3 bg-red-50 dark:bg-red-900/20 rounded-xl text-red-600 dark:text-red-400">
+                            <!-- Using Hexagon as a Gem shape variation or standard Gem -->
+                            <i data-lucide="hexagon" class="w-6 h-6 fill-red-100 dark:fill-red-900/30"></i>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 h-10">For serious traders ready to scale their capital using institutional models.</p>
                     
-                    <button class="w-full py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition shadow-lg shadow-red-200">Enroll in Ruby</button>
+                    <div class="mb-6">
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-5xl font-extrabold text-slate-900 dark:text-white price-ruby">₹12,999</span>
+                            <span class="text-slate-500 dark:text-slate-400 text-sm font-medium">/ lifetime</span>
+                        </div>
+                    </div>
+
+                    <a href="#contact" class="block w-full py-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all text-center mb-8 shadow-lg shadow-red-600/30">
+                        Join Ruby Tier
+                    </a>
+
+                    <div class="space-y-4 mt-auto">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Everything in Emerald, plus:</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300 font-medium">
+                                <div class="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600 dark:text-red-400"></i></div>
+                                5 Advanced Strategies
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300 font-medium">
+                                <div class="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600 dark:text-red-400"></i></div>
+                                <strong>The Gauntlet Model (10x Growth)</strong>
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300 font-medium">
+                                <div class="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600 dark:text-red-400"></i></div>
+                                Algo Bot Access
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300 font-medium">
+                                <div class="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600 dark:text-red-400"></i></div>
+                                Professional Trade Journal
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                <!-- DIAMOND PLAN -->
-                <div class="bg-white rounded-2xl p-8 border border-slate-200 card-shadow flex flex-col relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-2 bg-blue-600"></div>
-                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Diamond Plan</h3>
-                    <p class="text-slate-500 text-sm mb-6">Full Mentorship & Automation</p>
-                    
-                    <div class="mb-8 pb-8 border-b border-slate-100">
-                        <div class="flex items-baseline">
-                            <span class="text-4xl font-extrabold text-slate-900">₹19,999</span>
-                            <span class="text-slate-500 ml-2">/ lifetime</span>
+                <!-- DIAMOND (Elite) -->
+                <div class="group relative bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10 flex flex-col h-full">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading">Diamond</h3>
+                        <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400">
+                            <i data-lucide="diamond" class="w-6 h-6"></i>
                         </div>
-                        <p class="text-green-600 text-sm font-semibold mt-2">Includes GST</p>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 h-10">Elite 1-on-1 mentorship and full automation for high net-worth goals.</p>
+                    
+                    <div class="mb-6">
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-4xl font-extrabold text-slate-900 dark:text-white price-diamond">₹19,999</span>
+                            <span class="text-slate-500 dark:text-slate-400 text-sm font-medium">/ lifetime</span>
+                        </div>
                     </div>
 
-                    <ul class="space-y-4 mb-8 flex-1">
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-blue-600 shrink-0"></i>
-                            <strong>All 7 Strategies + 5 Indicators</strong>
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-blue-600 shrink-0"></i>
-                            1-on-1 Sunday Mentorship (1 Month)
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-blue-600 shrink-0"></i>
-                            <strong>1 Lakh to 1 Cr Growth Model</strong>
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <i data-lucide="check" class="w-5 h-5 text-blue-600 shrink-0"></i>
-                            Automated Algo Bot Access
-                        </li>
-                    </ul>
-                    
-                    <button class="w-full py-3 border-2 border-blue-600 text-blue-700 font-bold rounded-lg hover:bg-blue-50 transition">Enroll in Diamond</button>
+                    <a href="#contact" class="block w-full py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all text-center mb-8 shadow-lg shadow-blue-600/20">
+                        Apply for Diamond
+                    </a>
+
+                    <div class="space-y-4 mt-auto">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Everything in Ruby, plus:</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600 dark:text-blue-400"></i></div>
+                                All 7 Strategies Included
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600 dark:text-blue-400"></i></div>
+                                <strong>1-on-1 Mentorship</strong> (Sunday)
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600 dark:text-blue-400"></i></div>
+                                1 Lakh to 1 Cr Roadmap
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600 dark:text-blue-400"></i></div>
+                                Automated Algo Bot Access
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section id="reviews" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-slate-900 mb-12 font-heading">What Our <span class="text-blue-700">Students Say</span></h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                    <div class="flex items-center gap-1 mb-4 text-yellow-400">
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    </div>
-                    <p class="text-slate-600 text-sm mb-6 italic">"I work in IT and have very little time. The Emerald plan's morning setup is exactly what I needed. I trade for 30 mins, make my profit, and leave."</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-700 font-bold">AK</div>
-                        <div>
-                            <p class="text-sm font-bold text-slate-900">Arjun K.</p>
-                            <p class="text-xs text-slate-500">Emerald Student</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                    <div class="flex items-center gap-1 mb-4 text-yellow-400">
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    </div>
-                    <p class="text-slate-600 text-sm mb-6 italic">"The Gauntlet model in the Ruby course changed my psychology. My capital has grown 5x in 6 months just by following the rules."</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-red-700 font-bold">VS</div>
-                        <div>
-                            <p class="text-sm font-bold text-slate-900">Vikram S.</p>
-                            <p class="text-xs text-slate-500">Ruby Student</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                    <div class="flex items-center gap-1 mb-4 text-yellow-400">
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    </div>
-                    <p class="text-slate-600 text-sm mb-6 italic">"The 1 Lakh to 1 Cr roadmap is not a gimmick. The logic is sound, and the Algo Bot executes perfectly. Diamond tier is worth every rupee."</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold">RM</div>
-                        <div>
-                            <p class="text-sm font-bold text-slate-900">Rohan M.</p>
-                            <p class="text-xs text-slate-500">Diamond Student</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="mt-16 text-center">
+                <p class="text-slate-500 dark:text-slate-400 text-sm flex items-center justify-center gap-2">
+                    <i data-lucide="lock" class="w-4 h-4"></i> Secure payment powered by Razorpay. All prices include GST.
+                </p>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-white pt-16 pb-8">
+    <footer class="bg-slate-900 dark:bg-black text-white pt-16 pb-24 md:pb-8 transition-colors duration-300"> <!-- Added padding bottom for mobile so bar doesn't cover footer content -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                 <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-2 mb-4">
-                        <i data-lucide="bar-chart-2" class="w-6 h-6 text-blue-400"></i>
+                    <div class="flex items-center gap-2 mb-6">
+                        <i data-lucide="bar-chart-2" class="w-6 h-6 text-blue-500"></i>
                         <span class="font-heading font-bold text-xl">TRADE LORDS</span>
                     </div>
                     <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
-                        Trade Lords Academy is an ISO 9001:2015 certified institute dedicated to creating professional, disciplined traders.
+                        India's premier institution for systematic trading education. We build disciplined, profitable market operators.
                     </p>
                     <div class="flex gap-4">
-                        <div class="w-10 h-10 rounded bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition cursor-pointer">
-                            <i data-lucide="facebook" class="w-5 h-5"></i>
-                        </div>
-                        <div class="w-10 h-10 rounded bg-slate-800 flex items-center justify-center hover:bg-red-600 transition cursor-pointer">
-                            <i data-lucide="youtube" class="w-5 h-5"></i>
-                        </div>
-                        <div class="w-10 h-10 rounded bg-slate-800 flex items-center justify-center hover:bg-pink-600 transition cursor-pointer">
-                            <i data-lucide="instagram" class="w-5 h-5"></i>
-                        </div>
+                        <a href="#" class="text-slate-400 hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition"><i data-lucide="twitter" class="w-5 h-5"></i></a>
                     </div>
                 </div>
                 
                 <div>
-                    <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
-                    <ul class="space-y-3 text-slate-400 text-sm">
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Company</h4>
+                    <ul class="space-y-3 text-slate-300 text-sm">
                         <li><a href="#" class="hover:text-blue-400 transition">About Us</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Our Courses</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Success Stories</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Contact Support</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition">Our Mentors</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition">Contact</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Legal</h4>
-                    <ul class="space-y-3 text-slate-400 text-sm">
-                        <li><a href="#" class="hover:text-blue-400 transition">Terms & Conditions</a></li>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Legal</h4>
+                    <ul class="space-y-3 text-slate-300 text-sm">
+                        <li><a href="#" class="hover:text-blue-400 transition">Terms of Service</a></li>
                         <li><a href="#" class="hover:text-blue-400 transition">Privacy Policy</a></li>
                         <li><a href="#" class="hover:text-blue-400 transition">Refund Policy</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Risk Disclaimer</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition">Risk Disclosure</a></li>
                     </ul>
                 </div>
             </div>
             
-            <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+            <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-xs">
                 <p class="mb-2">&copy; 2024 Trade Lords Academy. All rights reserved.</p>
-                <p class="text-xs">
-                    Disclaimer: Trading in financial markets involves high risk. Past performance is not indicative of future results. 
-                    Please consult your financial advisor before investing.
-                </p>
+                <p>Trading in financial markets involves risk. Past performance is not indicative of future results.</p>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Float -->
-    <a href="#" class="whatsapp-float">
-        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    <!-- Flash Sale Sticky Bar (Replaces old Emerald Popup) -->
+    <div id="flash-sale-bar" class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 z-40 border-t border-emerald-100 dark:border-emerald-900 shadow-[0_-5px_25px_rgba(16,185,129,0.15)] transform translate-y-full transition-transform duration-500 ease-out">
+        <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
+                
+                <!-- Left: Price & Info -->
+                <div class="flex items-center gap-6 md:gap-8 w-full md:w-auto justify-between md:justify-start">
+                    <div class="flex items-center gap-3">
+                        <!-- Emerald Icon -->
+                        <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 hidden md:block">
+                            <i data-lucide="gem" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-slate-400 text-lg font-bold relative price-strikethrough">
+                                ₹12,000
+                                <div class="absolute top-1/2 left-0 w-full h-0.5 bg-red-500 -rotate-6 transform"></div>
+                            </span>
+                            <span class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-heading price-bar">₹5,999</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hidden md:block h-8 w-px bg-slate-200 dark:bg-slate-700"></div>
+                    
+                    <div class="text-sm font-medium text-slate-600 dark:text-slate-300">
+                        <span class="font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded border border-emerald-100 dark:border-emerald-900/50">Emerald Plan</span> Special Deal
+                    </div>
+                </div>
+
+                <!-- Right: CTA -->
+                <div class="flex items-center gap-4 w-full md:w-auto">
+                    <a href="#pricing" class="flex-1 md:flex-none bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-bold px-8 py-3 rounded-full shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all transform hover:-translate-y-0.5 text-sm uppercase tracking-wider text-center">
+                        Claim Now
+                    </a>
+                    <button onclick="document.getElementById('flash-sale-bar').classList.add('translate-y-full')" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Float (Adjusted z-index to sit above bar) -->
+    <a href="https://wa.me/919359361016?text=Hello%20Sir%20i%20have%20question%20related%20to%20the%20courses" target="_blank" class="whatsapp-float w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-xl hover:scale-110 transition-transform z-50 fixed bottom-28 md:bottom-24 right-6">
+        <svg viewBox="0 0 24 24" class="w-8 h-8 fill-white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
     </a>
 
     <script>
         lucide.createIcons();
-
-        // Optional: Simple scroll reveal effect
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg');
-            } else {
-                // nav.classList.remove('shadow-lg'); // Keep shadow for professional look
-            }
+        
+        // Show Flash Sale Bar after delay
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const bar = document.getElementById('flash-sale-bar');
+                bar.classList.remove('translate-y-full');
+            }, 1500);
         });
+
+        // Market Toggle Logic
+        function switchMarket(market) {
+            const btns = document.querySelectorAll('.market-btn');
+            const html = document.documentElement;
+            btns.forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + market).classList.add('active');
+
+            const marketTexts = document.querySelectorAll('.market-text');
+            const priceEmerald = document.querySelectorAll('.price-emerald');
+            const priceRuby = document.querySelectorAll('.price-ruby');
+            const priceDiamond = document.querySelectorAll('.price-diamond');
+            const profitHero = document.getElementById('hero-profit');
+            
+            // Bottom Bar
+            const priceBar = document.querySelector('.price-bar');
+            const priceStrikethrough = document.querySelector('.price-strikethrough');
+
+            if (market === 'indian') {
+                // Disable Dark Mode
+                html.classList.remove('dark');
+
+                marketTexts.forEach(el => el.innerHTML = 'Nifty & BankNifty');
+                priceEmerald.forEach(el => el.innerHTML = '₹5,999');
+                priceRuby.forEach(el => el.innerHTML = '₹12,999');
+                priceDiamond.forEach(el => el.innerHTML = '₹19,999');
+                profitHero.innerHTML = '₹50Cr+';
+                
+                // Bottom Bar
+                if(priceBar) priceBar.innerHTML = '₹5,999';
+                if(priceStrikethrough) {
+                    priceStrikethrough.innerHTML = '₹12,000 <div class="absolute top-1/2 left-0 w-full h-0.5 bg-red-500 -rotate-6 transform"></div>';
+                }
+                
+                // Update Video Titles to INR if needed or keep generic
+                document.getElementById('video-title-1').innerText = "How I Made ₹50,000 in 15 Minutes using the Morning Setup";
+
+            } else {
+                // Enable Dark Mode
+                html.classList.add('dark');
+
+                // Forex Market Values
+                marketTexts.forEach(el => el.innerHTML = 'XAUUSD & EURUSD');
+                priceEmerald.forEach(el => el.innerHTML = '$149');
+                priceRuby.forEach(el => el.innerHTML = '$299');
+                priceDiamond.forEach(el => el.innerHTML = '$499');
+                profitHero.innerHTML = '$6M+';
+
+                // Bottom Bar
+                if(priceBar) priceBar.innerHTML = '$149';
+                if(priceStrikethrough) {
+                    priceStrikethrough.innerHTML = '$300 <div class="absolute top-1/2 left-0 w-full h-0.5 bg-red-500 -rotate-6 transform"></div>';
+                }
+                
+                // Update Video Titles
+                document.getElementById('video-title-1').innerText = "How I Made $600 in 15 Minutes using the Morning Setup";
+            }
+        }
     </script>
 </body>
 </html>
