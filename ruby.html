@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby Tier | Trade Lords Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#1e293b',
+                            950: '#020617',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Modern Tech/Corporate Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #e11d48; /* Rose 600 - Ruby Color */
+            --bg-light: #F8FAFC;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Modern Gradient Button (Ruby Version) */
+        .btn-primary {
+            background: #e11d48;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary:hover {
+            background: #be123c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(225, 29, 72, 0.4);
+        }
+
+        /* Card Hover Effects */
+        .hover-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #E2E8F0;
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #fca5a5;
+        }
+        
+        /* Dark Mode Card Overrides */
+        .dark .hover-card {
+            border-color: #1e293b;
+            background-color: #0f172a;
+        }
+        .dark .hover-card:hover {
+            border-color: #881337;
+            box-shadow: 0 20px 25px -5px rgba(225, 29, 72, 0.2);
+        }
+
+        /* Subtle Background Grid */
+        .bg-grid {
+            background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
+            linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .dark .bg-grid {
+            background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
+            linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+        }
+
+        /* Smooth Fade In */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        /* --- RUBY ANIMATION STYLES --- */
+        .tech-ring {
+            stroke: rgba(225, 29, 72, 0.4); 
+            stroke-width: 1;
+            fill: none;
+            stroke-dasharray: 20 10;
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: spin-slow 20s linear infinite;
+        }
+        .tech-ring-reverse {
+            stroke: rgba(225, 29, 72, 0.3); 
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 50 50;
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: spin-reverse 25s linear infinite;
+        }
+        .ruby-core {
+            filter: drop-shadow(0 0 30px rgba(225, 29, 72, 0.6)); 
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: float-pulse 4s ease-in-out infinite;
+        }
+        .spec-connector {
+            stroke: #e11d48;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            animation: draw-line 2s ease-out forwards 0.5s;
+        }
+        .spec-dot {
+            fill: #e11d48;
+            opacity: 0;
+            animation: fade-in 0.5s ease-out forwards 1.5s;
+        }
+        .spec-label {
+            font-family: 'Orbitron', sans-serif;
+            fill: #e11d48;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            opacity: 0;
+            animation: slide-right 0.5s ease-out forwards 1.8s;
+        }
+        .spec-detail {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            fill: #334155; 
+            font-size: 14px;
+            opacity: 0;
+            animation: slide-right 0.5s ease-out forwards 2s;
+        }
+        .dark .spec-detail {
+            fill: #e2e8f0; 
+        }
+
+        @keyframes spin-slow { to { transform: rotate(360deg); } }
+        @keyframes spin-reverse { to { transform: rotate(-360deg); } }
+        @keyframes float-pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(225, 29, 72, 0.4)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 35px rgba(225, 29, 72, 0.7)); }
+        }
+        @keyframes draw-line { to { stroke-dashoffset: 0; } }
+        @keyframes fade-in { to { opacity: 1; } }
+        @keyframes slide-right {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="antialiased bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 transition-colors duration-300">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-rose-900 dark:bg-black text-rose-100 py-2 text-xs font-medium text-center border-b border-rose-800 dark:border-slate-900">
+        <span class="inline-block animate-pulse w-2 h-2 rounded-full bg-rose-400 mr-2"></span>
+        Advanced Batch: <span class="text-white font-bold">Only 12 Seats Remaining</span>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo linking back to Main Home -->
+                <a href="#" class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-rose-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-rose-600/20">
+                        <i data-lucide="diamond" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span class="font-heading font-bold text-xl text-slate-900 dark:text-white leading-none block">TRADE LORDS</span>
+                        <span class="text-[10px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-widest block">Ruby Tier</span>
+                    </div>
+                </a>
+                
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 transition">Home</a>
+                    <a href="#arsenal" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 transition">Arsenal</a>
+                    <a href="#curriculum" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 transition">Mission Log</a>
+                    <a href="#enroll" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-rose-600/20 dark:shadow-rose-900/30">
+                        Join Elite
+                    </a>
+                </div>
+
+                <button class="md:hidden text-slate-700 dark:text-slate-200">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-20 pb-32 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-300">
+        <div class="absolute inset-0 bg-grid opacity-100 dark:opacity-10"></div>
+        <!-- Red Gradient Blobs for Ruby Theme -->
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-rose-100 dark:bg-rose-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-red-100 dark:bg-red-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob animation-delay-2000"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-900/30 border border-rose-100 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-bold uppercase tracking-wide mb-6 fade-in-up">
+                    <i data-lucide="crown" class="w-3 h-3"></i> Elite Clearance Verified
+                </div>
+                
+                <h1 class="text-4xl lg:text-6xl font-heading font-extrabold text-slate-900 dark:text-white leading-[1.1] mb-6 fade-in-up delay-100">
+                    Dominate Every <br>
+                    <span class="text-rose-600 dark:text-rose-500">Market Cycle</span>
+                </h1>
+                
+                <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed max-w-2xl mx-auto fade-in-up delay-200">
+                    The complete arsenal for the full-time trader. 5 institutional strategies and 3 automated signal indicators to conquer any market condition.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up delay-300 mb-12">
+                    <a href="#enroll" class="btn-primary px-8 py-4 rounded-lg text-center font-bold text-base shadow-xl shadow-rose-600/20 dark:shadow-rose-900/30 flex items-center justify-center gap-2">
+                        Access The Vault <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- ANIMATED RUBY (CENTERED) -->
+                <div class="relative w-full max-w-4xl mx-auto flex items-center justify-center mt-[-1rem] fade-in-up delay-300">
+                    <!-- Background Glow -->
+                    <div class="absolute inset-0 bg-rose-500/10 blur-[80px] rounded-full"></div>
+                    
+                    <svg viewBox="-50 0 700 400" class="w-full h-auto drop-shadow-2xl relative z-10">
+                        <defs>
+                            <linearGradient id="rubyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fb7185;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#be123c;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Background Rings -->
+                        <g transform="translate(300, 200)">
+                             <g>
+                                <circle r="140" class="tech-ring" />
+                                <circle r="180" class="tech-ring-reverse" />
+                             </g>
+                        </g>
+
+                        <!-- Central Ruby -->
+                        <g transform="translate(300, 200)">
+                            <g class="ruby-core">
+                                <!-- Hexagonal Ruby Shape -->
+                                <path d="M0 -65 L55 -32 L55 32 L0 65 L-55 32 L-55 -32 Z" fill="url(#rubyGradient)" stroke="#fda4af" stroke-width="2" />
+                                <!-- Facets -->
+                                <path d="M0 -65 L0 -32 M55 -32 L27 -16 M55 32 L27 16 M0 65 L0 32 M-55 32 L-27 16 M-55 -32 L-27 -16" stroke="#e11d48" stroke-width="1" />
+                                <path d="M0 -32 L27 -16 L27 16 L0 32 L-27 16 L-27 -16 Z" fill="rgba(255, 255, 255, 0.15)" stroke="#fda4af" stroke-width="2" />
+                            </g>
+                        </g>
+
+                        <text x="300" y="205" text-anchor="middle" fill="#fff" font-family="Orbitron" font-weight="900" font-size="14" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8); pointer-events: none;">RUBY</text>
+
+                        <!-- Spec Lines -->
+                        <path d="M330 180 L400 130 L480 130" class="spec-connector" />
+                        <circle cx="480" cy="130" r="4" fill="#e11d48" class="spec-dot" />
+                        <text x="490" y="125" class="spec-label">STRATEGIES</text>
+                        <text x="490" y="145" class="spec-detail">5 PRO SYSTEMS</text>
+
+                        <path d="M360 200 L420 200 L480 200" class="spec-connector" style="animation-delay: 0.8s" />
+                        <circle cx="480" cy="200" r="4" fill="#e11d48" class="spec-dot" style="animation-delay: 1.8s" />
+                        <text x="490" y="195" class="spec-label" style="animation-delay: 2.1s">AUTOMATION</text>
+                        <text x="490" y="215" class="spec-detail" style="animation-delay: 2.3s">3 INDICATORS</text>
+
+                        <path d="M330 220 L400 270 L480 270" class="spec-connector" style="animation-delay: 1.1s" />
+                        <circle cx="480" cy="270" r="4" fill="#e11d48" class="spec-dot" style="animation-delay: 2.1s" />
+                        <text x="490" y="265" class="spec-label" style="animation-delay: 2.4s">ACCESS</text>
+                        <text x="490" y="285" class="spec-detail" style="animation-delay: 2.6s">LIFETIME + VIP</text>
+
+                         <path d="M240 200 L180 200 L120 200" class="spec-connector" style="animation-delay: 1.4s" />
+                         <circle cx="120" cy="200" r="4" fill="#e11d48" class="spec-dot" style="animation-delay: 2.4s" />
+                         <text x="110" y="195" text-anchor="end" class="spec-label" style="animation-delay: 2.7s">WIN RATE</text>
+                         <text x="110" y="215" text-anchor="end" class="spec-detail" style="animation-delay: 2.9s">82% VERIFIED</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Arsenal (Strategies & Indicators) -->
+    <section id="arsenal" class="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-rose-600 dark:text-rose-400 font-bold text-xs uppercase tracking-widest mb-2 block">Full Authorization</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">The Ruby <span class="text-rose-600 dark:text-rose-500">Arsenal</span></h2>
+                <p class="text-slate-600 dark:text-slate-400">Total warfare capability. 5 Strategies. 3 Custom Indicators.</p>
+            </div>
+
+            <!-- Strategies Grid -->
+            <div class="mb-12">
+                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-6 pl-4 border-l-4 border-rose-600">Active Strategies</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Strategy 1 -->
+                    <div class="hover-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="crosshair" class="w-16 h-16 text-rose-600"></i></div>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">1. Bank Nifty Sniper</h4>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">The classic morning breakout system. Capture the first 30 minutes of volatility.</p>
+                    </div>
+
+                    <!-- Strategy 2 -->
+                    <div class="hover-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800 relative overflow-hidden">
+                         <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="zap" class="w-16 h-16 text-rose-600"></i></div>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">2. Momentum Trap</h4>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Catch false breakouts and ride the aggressive reversal. High R:R ratio setup.</p>
+                    </div>
+
+                    <!-- Strategy 3 -->
+                    <div class="hover-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800 relative overflow-hidden">
+                         <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="trending-up" class="w-16 h-16 text-rose-600"></i></div>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">3. Trend Rider 2.0</h4>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Mid-day trend following system using moving average ribbons. Stay in the move.</p>
+                    </div>
+
+                    <!-- Strategy 4 -->
+                    <div class="hover-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800 relative overflow-hidden">
+                         <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="bomb" class="w-16 h-16 text-rose-600"></i></div>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">4. Expiry Gamma Blast</h4>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Specific rules for Thursday/Zero-to-Hero trades. High risk, extreme reward.</p>
+                    </div>
+
+                    <!-- Strategy 5 -->
+                    <div class="hover-card p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800 relative overflow-hidden">
+                         <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="anchor" class="w-16 h-16 text-rose-600"></i></div>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">5. The Swing King</h4>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Position sizing for overnight trades. Learn to hold winners for days.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indicators Grid -->
+            <div>
+                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-6 pl-4 border-l-4 border-rose-600">Automated Indicators</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Indicator 1 -->
+                    <div class="bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/30 p-6 rounded-2xl">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i data-lucide="eye" class="w-6 h-6 text-rose-600"></i>
+                            <h4 class="font-bold text-slate-900 dark:text-white">Hidden Spy</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Volume divergence scanner. Sees what candles hide.</p>
+                    </div>
+
+                    <!-- Indicator 2 -->
+                    <div class="bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/30 p-6 rounded-2xl">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i data-lucide="activity" class="w-6 h-6 text-rose-600"></i>
+                            <h4 class="font-bold text-slate-900 dark:text-white">Pulse Generator</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Auto Buy/Sell signals on chart based on momentum.</p>
+                    </div>
+
+                    <!-- Indicator 3 -->
+                    <div class="bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/30 p-6 rounded-2xl">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i data-lucide="layers" class="w-6 h-6 text-rose-600"></i>
+                            <h4 class="font-bold text-slate-900 dark:text-white">Zone Hunter</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Automatically plots institutional Demand & Supply zones.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing / Secure Seat -->
+    <section id="enroll" class="py-24 bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">Claim Your <span class="text-rose-600 dark:text-rose-500">Legacy</span></h2>
+            </div>
+
+            <div class="max-w-lg mx-auto group relative bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 hover:border-rose-500 dark:hover:border-rose-500 transition-all duration-300 hover:shadow-2xl hover:shadow-rose-500/20">
+                <div class="absolute top-0 right-0 bg-gradient-to-l from-rose-600 to-red-600 text-white text-xs font-bold px-6 py-1.5 rounded-bl-xl rounded-tr-2xl uppercase tracking-wide shadow-lg">
+                    Best Value
+                </div>
+
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white font-heading">Ruby Elite Pass</h3>
+                    <div class="p-3 bg-rose-50 dark:bg-rose-900/20 rounded-xl text-rose-600 dark:text-rose-400">
+                        <i data-lucide="diamond" class="w-8 h-8"></i>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-5xl font-extrabold text-slate-900 dark:text-white">₹17,999</span>
+                        <span class="text-slate-400 line-through text-xl">₹29,999</span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-2">One-time payment. Lifetime updates included.</p>
+                </div>
+
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-rose-600 dark:text-rose-400"></i></div>
+                        <strong>All 5 Strategies</strong> (Intraday + Swing)
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-rose-600 dark:text-rose-400"></i></div>
+                        <strong>3 Premium Buy/Sell Indicators</strong>
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-rose-600 dark:text-rose-400"></i></div>
+                        Lifetime "War Room" Telegram Access
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-rose-600 dark:text-rose-400"></i></div>
+                        Direct Mentor Chat Support
+                    </li>
+                     <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-rose-600 dark:text-rose-400"></i></div>
+                        Weekly Live Trading Sessions
+                    </li>
+                </ul>
+
+                <button class="block w-full py-4 bg-rose-600 text-white font-bold rounded-xl hover:bg-rose-700 transition-all text-center shadow-lg shadow-rose-600/20 text-lg">
+                    Initialize Payment
+                </button>
+                <p class="text-xs text-center text-slate-400 mt-4 flex justify-center items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Secure 256-bit SSL Encrypted Payment</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Standard) -->
+    <footer class="bg-slate-900 dark:bg-black text-white pt-16 pb-8 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <i data-lucide="bar-chart-2" class="w-6 h-6 text-rose-500"></i>
+                        <span class="font-heading font-bold text-xl">TRADE LORDS</span>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
+                        The Ruby Tier represents the pinnacle of retail trading. Equip yourself with institutional tools and dominate the charts.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-slate-400 hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Links</h4>
+                    <ul class="space-y-3 text-slate-300 text-sm">
+                        <li><a href="#" class="hover:text-rose-400 transition">Home</a></li>
+                        <li><a href="#" class="hover:text-rose-400 transition">Support</a></li>
+                        <li><a href="#" class="hover:text-rose-400 transition">Login</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Legal</h4>
+                    <ul class="space-y-3 text-slate-300 text-sm">
+                        <li><a href="#" class="hover:text-rose-400 transition">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-rose-400 transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-xs">
+                <p>&copy; 2024 Trade Lords Academy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
