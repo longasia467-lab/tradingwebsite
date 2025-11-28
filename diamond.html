@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond Tier | Trade Lords Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#1e293b',
+                            950: '#020617',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Modern Tech/Corporate Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #06B6D4; /* Cyan 500 */
+            --bg-light: #F8FAFC;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Modern Gradient Button (Diamond Version) */
+        .btn-primary {
+            background: #06B6D4;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary:hover {
+            background: #0891b2;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Card Hover Effects */
+        .hover-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #E2E8F0;
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #A5F3FC;
+        }
+        
+        /* Dark Mode Card Overrides */
+        .dark .hover-card {
+            border-color: #1e293b;
+            background-color: #0f172a;
+        }
+        .dark .hover-card:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 20px 25px -5px rgba(6, 182, 212, 0.15);
+        }
+
+        /* Subtle Background Grid */
+        .bg-grid {
+            background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
+            linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .dark .bg-grid {
+            background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
+            linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+        }
+
+        /* Smooth Fade In */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        /* --- DIAMOND ANIMATION STYLES --- */
+        .tech-ring {
+            stroke: rgba(6, 182, 212, 0.4); 
+            stroke-width: 1;
+            fill: none;
+            stroke-dasharray: 20 10;
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: spin-slow 20s linear infinite;
+        }
+        .tech-ring-reverse {
+            stroke: rgba(6, 182, 212, 0.3); 
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 50 50;
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: spin-reverse 25s linear infinite;
+        }
+        .diamond-core {
+            filter: drop-shadow(0 0 30px rgba(6, 182, 212, 0.6)); 
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: float-pulse 4s ease-in-out infinite;
+        }
+        .spec-connector {
+            stroke: #06b6d4;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            animation: draw-line 2s ease-out forwards 0.5s;
+        }
+        .spec-dot {
+            fill: #06b6d4;
+            opacity: 0;
+            animation: fade-in 0.5s ease-out forwards 1.5s;
+        }
+        .spec-label {
+            font-family: 'Orbitron', sans-serif;
+            fill: #06b6d4;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: slide-right 0.5s ease-out forwards 1.8s;
+        }
+        .spec-detail {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            fill: #334155; 
+            font-size: 12px;
+            opacity: 0;
+            animation: slide-right 0.5s ease-out forwards 2s;
+        }
+        .dark .spec-detail {
+            fill: #e2e8f0; 
+        }
+
+        @keyframes spin-slow { to { transform: rotate(360deg); } }
+        @keyframes spin-reverse { to { transform: rotate(-360deg); } }
+        @keyframes float-pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.4)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 35px rgba(6, 182, 212, 0.7)); }
+        }
+        @keyframes draw-line { to { stroke-dashoffset: 0; } }
+        @keyframes fade-in { to { opacity: 1; } }
+        @keyframes slide-right {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="antialiased bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 transition-colors duration-300">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-cyan-950 dark:bg-black text-cyan-100 py-2 text-xs font-medium text-center border-b border-cyan-900 dark:border-slate-900">
+        <span class="inline-block animate-pulse w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>
+        Elite Batch: <span class="text-white font-bold">Only 3 Spots Remaining</span>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo linking back to Main Home -->
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center text-white shadow-lg shadow-cyan-500/20">
+                        <i data-lucide="diamond" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span class="font-heading font-bold text-xl text-slate-900 dark:text-white leading-none block">TRADE LORDS</span>
+                        <span class="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest block">Diamond Tier</span>
+                    </div>
+                </a>
+                
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition">Home</a>
+                    <a href="#strategies" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition">Strategies</a>
+                    <a href="#curriculum" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition">Curriculum</a>
+                    <a href="#enroll" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-cyan-600/20 dark:shadow-cyan-900/30">
+                        Enroll Now
+                    </a>
+                </div>
+
+                <button class="md:hidden text-slate-700 dark:text-slate-200">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-20 pb-32 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-300">
+        <div class="absolute inset-0 bg-grid opacity-100 dark:opacity-10"></div>
+        <!-- Cyan Gradient Blobs for Diamond Theme -->
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-100 dark:bg-cyan-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob animation-delay-2000"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-900/30 border border-cyan-100 dark:border-cyan-800 text-cyan-700 dark:text-cyan-300 text-xs font-bold uppercase tracking-wide mb-6 fade-in-up">
+                    <i data-lucide="crown" class="w-3 h-3"></i> Elite Clearance Level
+                </div>
+                
+                <h1 class="text-5xl lg:text-7xl font-heading font-extrabold text-slate-900 dark:text-white leading-[1.1] mb-6 fade-in-up delay-100">
+                    Dominion Over <br>
+                    <span class="text-cyan-500 dark:text-cyan-400">The Markets</span>
+                </h1>
+                
+                <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed max-w-2xl mx-auto fade-in-up delay-200">
+                    The Diamond Tier isn't just about trading; it's about empire building. Access our full arsenal of 7 strategies, automated bots, and direct 1-on-1 mentorship.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up delay-300 mb-12">
+                    <a href="#enroll" class="btn-primary px-8 py-4 rounded-lg text-center font-bold text-base shadow-xl shadow-cyan-600/20 dark:shadow-cyan-900/30 flex items-center justify-center gap-2">
+                        Start Your Reign <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- ANIMATED DIAMOND (CENTERED) -->
+                <div class="relative w-full max-w-4xl mx-auto flex items-center justify-center mt-[-1rem] fade-in-up delay-300">
+                    <!-- Background Glow -->
+                    <div class="absolute inset-0 bg-cyan-500/15 blur-[100px] rounded-full"></div>
+                    
+                    <!-- ViewBox 0 0 800 400 ensures x=400 is perfectly in the middle -->
+                    <svg viewBox="0 0 800 400" class="w-full h-auto drop-shadow-2xl relative z-10">
+                        <defs>
+                            <linearGradient id="mainBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:0.9" />
+                                <stop offset="100%" style="stop-color:#0e7490;stop-opacity:0.95" />
+                            </linearGradient>
+                            <linearGradient id="topFacetGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#cffafe;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:0.6" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Background Rings (Centered at 400, 200) -->
+                        <g transform="translate(400, 200)">
+                             <g>
+                                <circle r="140" class="tech-ring" />
+                                <circle r="180" class="tech-ring-reverse" />
+                             </g>
+                        </g>
+
+                        <!-- Central Diamond Shape (Centered at 400, 200) -->
+                        <!-- Scaled to 0.8 for perfect fit -->
+                        <g transform="translate(400, 200) scale(0.8)">
+                            <g class="diamond-core">
+                                <!-- Main Body Outline -->
+                                <path d="M-80 -20 L0 100 L80 -20 L50 -70 L-50 -70 Z" fill="url(#mainBodyGrad)" stroke="#67e8f9" stroke-width="2" />
+
+                                <!-- Crown Facets -->
+                                <path d="M-50 -70 L-80 -20 L0 -10 L-50 -70 Z" fill="url(#topFacetGrad)" stroke="#a5f3fc" stroke-width="1" />
+                                <path d="M50 -70 L80 -20 L0 -10 L50 -70 Z" fill="url(#topFacetGrad)" stroke="#a5f3fc" stroke-width="1" />
+                                <path d="M-50 -70 L0 -10 L50 -70 Z" fill="rgba(255,255,255,0.3)" stroke="#a5f3fc" stroke-width="1" />
+
+                                <!-- Pavilion Facets -->
+                                <path d="M-80 -20 L0 100 L0 -10 Z" fill="rgba(8, 145, 178, 0.4)" stroke="#a5f3fc" stroke-width="1" />
+                                <path d="M80 -20 L0 100 L0 -10 Z" fill="rgba(22, 78, 99, 0.4)" stroke="#a5f3fc" stroke-width="1" />
+                                
+                                <!-- Center Highlight -->
+                                <path d="M0 -10 L0 100" stroke="#a5f3fc" stroke-width="1.5" opacity="0.6" />
+                            </g>
+                        </g>
+
+                        <!-- LABEL (Centered at 400) -->
+                        <text x="400" y="240" text-anchor="middle" fill="#fff" font-family="Orbitron" font-weight="900" font-size="12" style="text-shadow: 0 4px 10px rgba(6,182,212,0.9); pointer-events: none;">DIAMOND</text>
+
+                        <!-- Spec Lines - Recalculated for x=400 Center -->
+                        
+                        <!-- Top Right (Starts ~460, Ends 600) -->
+                        <path d="M465 180 L540 120 L600 120" class="spec-connector" />
+                        <circle cx="600" cy="120" r="4" fill="#06b6d4" class="spec-dot" />
+                        <text x="610" y="115" class="spec-label">OBJECTIVE</text>
+                        <text x="610" y="135" class="spec-detail">WEALTH GENERATION</text>
+
+                        <!-- Middle Right (Starts ~475, Ends 600) -->
+                        <path d="M475 200 L560 200 L600 200" class="spec-connector" style="animation-delay: 0.8s" />
+                        <circle cx="600" cy="200" r="4" fill="#06b6d4" class="spec-dot" style="animation-delay: 1.8s" />
+                        <text x="610" y="195" class="spec-label" style="animation-delay: 2.1s">EXECUTION</text>
+                        <text x="610" y="215" class="spec-detail" style="animation-delay: 2.3s">FULLY AUTOMATED</text>
+
+                        <!-- Bottom Right (Starts ~465, Ends 600) -->
+                        <path d="M465 220 L540 280 L600 280" class="spec-connector" style="animation-delay: 1.1s" />
+                        <circle cx="600" cy="280" r="4" fill="#06b6d4" class="spec-dot" style="animation-delay: 2.1s" />
+                        <text x="610" y="275" class="spec-label" style="animation-delay: 2.4s">TIMEFRAME</text>
+                        <text x="610" y="295" class="spec-detail" style="animation-delay: 2.6s">WEEKLY REVIEW</text>
+
+                         <!-- Left Side (Starts ~335, Ends 200) -->
+                         <path d="M335 200 L260 200 L180 200" class="spec-connector" style="animation-delay: 1.4s" />
+                         <circle cx="180" cy="200" r="4" fill="#06b6d4" class="spec-dot" style="animation-delay: 2.4s" />
+                         <text x="170" y="195" text-anchor="end" class="spec-label" style="animation-delay: 2.7s">RISK REWARD</text>
+                         <text x="170" y="215" text-anchor="end" class="spec-detail" style="animation-delay: 2.9s">1:5+ TARGET</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Armory (Strategies) -->
+    <section id="strategies" class="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-cyan-600 dark:text-cyan-400 font-bold text-xs uppercase tracking-widest mb-2 block">System Specifications</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">The <span class="text-cyan-500 dark:text-cyan-400">Armory</span></h2>
+                <p class="text-slate-600 dark:text-slate-400">Full access to our complete library of 7 strategies and 5 premium indicators.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Strategy Block -->
+                <div class="hover-card p-8 rounded-2xl bg-cyan-50 dark:bg-slate-900 dark:border-slate-800">
+                    <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-xl shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-700">
+                        <span class="font-heading font-bold text-xl text-cyan-600 dark:text-cyan-400">07</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">INSTITUTIONAL STRATEGIES</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                        From the "Bank Nifty Sniper" to the "Option Buying Algo", you get every edge we have discovered. Cover every market condition: Trending, Ranging, and Volatile.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-cyan-500"></i> Includes Option Selling Models
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-cyan-500"></i> Swing & Intraday Covered
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Indicator Block -->
+                <div class="hover-card p-8 rounded-2xl bg-cyan-50 dark:bg-slate-900 dark:border-slate-800">
+                    <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-xl shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-700">
+                        <span class="font-heading font-bold text-xl text-cyan-600 dark:text-cyan-400">05</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">BUY/SELL INDICATORS</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                        Our complete suite of TradingView scripts. Includes "The Hidden Spy", "Trend Catcher", "Volume Delta", and "Institutional Zones".
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-cyan-500"></i> Lifetime License
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-cyan-500"></i> Source Code Access
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum (Mission Log) -->
+    <section id="curriculum" class="py-24 bg-slate-50 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-heading font-bold text-center text-slate-900 dark:text-white mb-16">Mission <span class="text-cyan-500 dark:text-cyan-400">Log</span></h2>
+            
+            <div class="space-y-4">
+                <!-- Module 1 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:border-cyan-500 transition-colors">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 p-2 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
+                            <i data-lucide="briefcase" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Module 1: Advanced Portfolio Theory</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Diversification is for idiots. Learn concentration. How to allocate capital for maximum alpha.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:border-cyan-500 transition-colors">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 p-2 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Module 2: The 1 Cr Roadmap</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">A mathematical, step-by-step plan to scale a 1 Lakh account to 1 Crore using the 'Gauntlet Model' compounding effect.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:border-cyan-500 transition-colors">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 p-2 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
+                            <i data-lucide="cpu" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Module 3: Algo Bot Configuration</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Stop trading manually. We set up the Algo Bot on your account to execute the Diamond strategies automatically.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 4 -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border-l-4 border-l-cyan-500 border border-slate-200 dark:border-slate-700">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 p-2 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
+                            <i data-lucide="video" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Module 4: One-on-One Session Archives</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Access to the vault of private mentorship calls where we dissect student mistakes and psychology.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing / Secure Seat -->
+    <section id="enroll" class="py-24 bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">Ascend To <span class="text-cyan-500 dark:text-cyan-400">Elite</span></h2>
+            </div>
+
+            <div class="max-w-lg mx-auto group relative bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 hover:border-cyan-500 dark:hover:border-cyan-500 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/10">
+                <div class="absolute top-0 right-0 bg-cyan-600 text-white text-xs font-bold px-6 py-1.5 rounded-bl-xl rounded-tr-2xl uppercase tracking-wide">
+                    Exclusive
+                </div>
+
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading">Diamond Elite Pass</h3>
+                    <div class="p-3 bg-cyan-50 dark:bg-cyan-900/20 rounded-xl text-cyan-600 dark:text-cyan-400">
+                        <i data-lucide="diamond" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-5xl font-extrabold text-slate-900 dark:text-white">₹37,999</span>
+                        <span class="text-slate-400 line-through text-xl">₹50,000</span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-2">One-time payment. Lifetime access + Mentorship.</p>
+                </div>
+
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-5 h-5 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-cyan-600 dark:text-cyan-400"></i></div>
+                        <strong>7 Institutional Strategies</strong>
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-5 h-5 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-cyan-600 dark:text-cyan-400"></i></div>
+                        <strong>5 Buy/Sell Indicators (Lifetime)</strong>
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-5 h-5 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-cyan-600 dark:text-cyan-400"></i></div>
+                        1-on-1 Sunday Mentorship (1 Month)
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-5 h-5 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-cyan-600 dark:text-cyan-400"></i></div>
+                        Automated Algo Bot Access
+                    </li>
+                </ul>
+
+                <button class="block w-full py-4 bg-cyan-600 text-white font-bold rounded-xl hover:bg-cyan-700 transition-all text-center shadow-lg shadow-cyan-600/20">
+                    Initialize Payment
+                </button>
+                <p class="text-xs text-center text-slate-400 mt-4 flex justify-center items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Secure 256-bit SSL Encrypted Payment</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Field Reports -->
+    <section class="py-24 bg-slate-50 dark:bg-slate-900/50 dark:border-t dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-heading font-bold text-center text-slate-900 dark:text-white mb-4">Field <span class="text-cyan-500 dark:text-cyan-400">Reports</span></h2>
+            <p class="text-center text-slate-600 dark:text-slate-400 mb-16">Results from the inner circle.</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Comment 1 -->
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center font-bold text-slate-600 dark:text-slate-400">RM</div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">Rohan M.</p>
+                                <p class="text-xs text-cyan-600 dark:text-cyan-400">Diamond Member</p>
+                            </div>
+                        </div>
+                        <div class="flex text-cyan-500">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 leading-relaxed">
+                        "The <span class="text-slate-900 dark:text-white font-bold">1 Cr Roadmap</span> gave me a clear vision. I stopped overtrading. The Algo Bot handles the stress while I focus on the big picture."
+                    </p>
+                    <div class="text-xs text-slate-400 pt-4 border-t border-slate-100 dark:border-slate-800 font-mono">
+                        Focus: Automation • ROI: 450%
+                    </div>
+                </div>
+
+                <!-- Comment 2 -->
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 md:-translate-y-4">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center font-bold text-slate-600 dark:text-slate-400">AK</div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">Ankit K.</p>
+                                <p class="text-xs text-cyan-600 dark:text-cyan-400">Diamond Member</p>
+                            </div>
+                        </div>
+                        <div class="flex text-cyan-500">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 leading-relaxed">
+                        "The 1-on-1 mentorship fixed my psychology. I was profitable but inconsistent. The mentor identified one flaw in my risk management, and now I'm scaling up."
+                    </p>
+                    <div class="text-xs text-slate-400 pt-4 border-t border-slate-100 dark:border-slate-800 font-mono">
+                        Focus: Psychology • Status: Funded Trader
+                    </div>
+                </div>
+
+                <!-- Comment 3 -->
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center font-bold text-slate-600 dark:text-slate-400">SJ</div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">Sarah J.</p>
+                                <p class="text-xs text-cyan-600 dark:text-cyan-400">Diamond Member</p>
+                            </div>
+                        </div>
+                        <div class="flex text-cyan-500">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 leading-relaxed">
+                        "7 Strategies sounds like a lot, but they cover every market condition. When the market is trending, I use the 'Trend Catcher'. When it's ranging, I use the 'Option Seller'."
+                    </p>
+                    <div class="text-xs text-slate-400 pt-4 border-t border-slate-100 dark:border-slate-800 font-mono">
+                        Focus: Versatility • Win Rate: 82%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Standard) -->
+    <footer class="bg-slate-900 dark:bg-black text-white pt-16 pb-8 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <i data-lucide="bar-chart-2" class="w-6 h-6 text-cyan-500"></i>
+                        <span class="font-heading font-bold text-xl">TRADE LORDS</span>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
+                        The Diamond Tier is the pinnacle of retail trading education. We build market masters through automation, precision, and discipline.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-slate-400 hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Links</h4>
+                    <ul class="space-y-3 text-slate-300 text-sm">
+                        <li><a href="index.html" class="hover:text-cyan-400 transition">Home</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition">Support</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition">Login</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Legal</h4>
+                    <ul class="space-y-3 text-slate-300 text-sm">
+                        <li><a href="#" class="hover:text-cyan-400 transition">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-xs">
+                <p>&copy; 2024 Trade Lords Academy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
