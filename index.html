@@ -15,7 +15,18 @@
                             850: '#1e293b',
                             950: '#020617',
                         }
-                    }
+                    },
+                    animation: {
+                        blob: "blob 7s infinite",
+                    },
+                    keyframes: {
+                        blob: {
+                            "0%": { transform: "translate(0px, 0px) scale(1)" },
+                            "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                            "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                            "100%": { transform: "translate(0px, 0px) scale(1)" },
+                        },
+                    },
                 }
             }
         }
@@ -69,32 +80,17 @@
             border-color: #CBD5E1;
         }
         
-        /* Dark Mode Card Overrides */
-        .dark .hover-card {
-            border-color: #1e293b;
-            background-color: #0f172a;
-        }
-        .dark .hover-card:hover {
-            border-color: #334155;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-        }
-
         /* Subtle Background Grid */
         .bg-grid {
             background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
             linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
             background-size: 40px 40px;
         }
-        
-        .dark .bg-grid {
-            background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
-            linear-gradient(to bottom, #1e293b 1px, transparent 1px);
-        }
 
         .whatsapp-float {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 90px; /* Adjusted for mobile sticky bar */
+            right: 20px;
             z-index: 50;
             transition: transform 0.3s;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
@@ -113,137 +109,141 @@
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-300 { animation-delay: 0.3s; }
-        
-        /* Market Switcher Styles */
-        .market-toggle {
-            background: #F1F5F9;
-            padding: 4px;
-            border-radius: 8px;
-            display: inline-flex;
-            gap: 4px;
+
+        /* Mobile Menu Transition */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
         }
-        .dark .market-toggle {
-            background: #1e293b;
-        }
-        .market-btn {
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #64748B;
-            transition: all 0.2s ease;
-        }
-        .market-btn.active {
-            background: #ffffff;
-            color: #2563EB;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .dark .market-btn {
-            color: #94a3b8;
-        }
-        .dark .market-btn.active {
-            background: #334155;
-            color: #60a5fa;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        #mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
         }
     </style>
 </head>
-<body class="antialiased bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 transition-colors duration-300">
+<body class="antialiased bg-white text-slate-600 transition-colors duration-300">
 
     <!-- Top Announcement Bar -->
-    <div class="bg-slate-900 dark:bg-black text-slate-300 py-2 text-xs font-medium text-center border-b border-slate-800 dark:border-slate-900">
-        <span class="inline-block animate-pulse w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-        Admissions Open for New Batch: <span class="text-white font-bold">Starts Monday</span> • Limited Seats Available
+    <div class="bg-slate-900 text-slate-300 py-2 text-[10px] md:text-xs font-medium text-center border-b border-slate-800 px-2">
+        <span class="inline-block animate-pulse w-2 h-2 rounded-full bg-green-500 mr-1 md:mr-2"></span>
+        Admissions Open: <span class="text-white font-bold">Starts Monday</span> • Limited Seats
     </div>
 
+    <!-- Top Ticker -->
+    <div class="bg-slate-800 text-white py-2 overflow-hidden z-40 relative border-b border-slate-700">
+        <div class="marquee-container flex whitespace-nowrap overflow-hidden">
+            <div class="marquee-content text-[10px] md:text-xs font-semibold uppercase tracking-[0.15em] flex animate-[marquee_40s_linear_infinite]" id="market-ticker">
+                <!-- Content will be injected by JS -->
+                <span class="mx-6 text-slate-400">Loading Market Data...</span>
+            </div>
+        </div>
+    </div>
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+
     <!-- Navbar -->
-    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-slate-200 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-600/20">
-                        <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+            <div class="flex justify-between items-center h-16 md:h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 md:gap-3">
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-600/20">
+                        <i data-lucide="bar-chart-2" class="w-5 h-5 md:w-6 md:h-6"></i>
                     </div>
                     <div>
-                        <span class="font-heading font-bold text-xl text-slate-900 dark:text-white leading-none block">TRADE LORDS</span>
-                        <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block">Academy</span>
+                        <span class="font-heading font-bold text-lg md:text-xl text-slate-900 leading-none block">TRADE LORDS</span>
+                        <span class="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase tracking-widest block">Academy</span>
                     </div>
                 </div>
                 
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center gap-6">
-                    <!-- Market Toggle Switch -->
-                    <div class="market-toggle mr-4 transition-colors duration-300">
-                        <button class="market-btn active" id="btn-indian" onclick="switchMarket('indian')">🇮🇳 Indian</button>
-                        <button class="market-btn" id="btn-forex" onclick="switchMarket('forex')">🌎 Forex</button>
-                    </div>
-
-                    <a href="#home" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a>
-                    <a href="#curriculum" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Curriculum</a>
-                    <a href="#pricing" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Pricing</a>
-                    <a href="#contact" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-blue-600/20 dark:shadow-blue-900/30">
+                    <a href="#home" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">Home</a>
+                    <a href="#curriculum" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">Curriculum</a>
+                    <a href="#pricing" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition">Pricing</a>
+                    <a href="#contact" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-blue-600/20">
                         Get Started
                     </a>
                 </div>
 
-                <button class="md:hidden text-slate-700 dark:text-slate-200">
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-slate-700 p-2" onclick="toggleMobileMenu()">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
+
+        <!-- Mobile Menu Container -->
+        <div id="mobile-menu" class="md:hidden bg-white border-b border-slate-100">
+            <div class="px-4 pt-4 pb-6 space-y-4">
+                <a href="#home" class="block text-base font-medium text-slate-700 hover:text-blue-600" onclick="toggleMobileMenu()">Home</a>
+                <a href="#curriculum" class="block text-base font-medium text-slate-700 hover:text-blue-600" onclick="toggleMobileMenu()">Curriculum</a>
+                <a href="#pricing" class="block text-base font-medium text-slate-700 hover:text-blue-600" onclick="toggleMobileMenu()">Pricing</a>
+                <a href="#contact" class="block w-full text-center btn-primary px-6 py-3 rounded-lg text-sm font-bold shadow-lg shadow-blue-600/20" onclick="toggleMobileMenu()">
+                    Get Started
+                </a>
+            </div>
+        </div>
     </nav>
 
-    <!-- Hero Section with Video -->
-    <section id="home" class="relative pt-20 pb-32 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-300">
-        <div class="absolute inset-0 bg-grid opacity-100 dark:opacity-10"></div>
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden bg-white transition-colors duration-300">
+        <div class="absolute inset-0 bg-grid opacity-100"></div>
         <!-- Gradient Blobs -->
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob"></div>
-        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-100 dark:bg-indigo-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob animation-delay-2000"></div>
+        <div class="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-blue-100 rounded-full blur-3xl opacity-50 mix-blend-multiply filter animate-blob"></div>
+        <div class="absolute bottom-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-indigo-100 rounded-full blur-3xl opacity-50 mix-blend-multiply filter animate-blob animation-delay-2000"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="text-center lg:text-left">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-bold uppercase tracking-wide mb-6 fade-in-up">
+            <div class="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
+                <div class="text-center lg:text-left order-2 lg:order-1">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-[10px] md:text-xs font-bold uppercase tracking-wide mb-4 md:mb-6 fade-in-up">
                         <i data-lucide="check-circle" class="w-3 h-3"></i> ISO 9001:2015 Certified
                     </div>
                     
-                    <h1 class="text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 dark:text-white leading-[1.1] mb-6 fade-in-up delay-100">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold text-slate-900 leading-[1.1] mb-4 md:mb-6 fade-in-up delay-100">
                         Stop Gambling. <br>
-                        Start <span class="text-blue-600 dark:text-blue-400">Trading.</span>
+                        Start <span class="text-blue-600">Trading.</span>
                     </h1>
                     
-                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0 fade-in-up delay-200">
-                        Master the <strong>Gauntlet Model™</strong> and trade <span class="market-text text-slate-900 dark:text-white font-semibold">Nifty & BankNifty</span> with institutional logic. No guesswork. No noise. Just a proven mathematical edge.
+                    <p class="text-base md:text-lg text-slate-600 mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0 fade-in-up delay-200 px-2 md:px-0">
+                        Master the <strong>Gauntlet Model™</strong> and trade <span class="font-semibold text-slate-900">Nifty & BankNifty</span> with institutional logic. No guesswork. No noise. Just a proven mathematical edge.
                     </p>
                     
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start fade-in-up delay-300">
-                        <a href="#pricing" class="btn-primary px-8 py-4 rounded-lg text-center font-bold text-base shadow-xl shadow-blue-600/20 dark:shadow-blue-900/30 flex items-center justify-center gap-2">
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start fade-in-up delay-300 w-full md:w-auto px-4 md:px-0">
+                        <a href="#pricing" class="btn-primary px-8 py-3.5 rounded-lg text-center font-bold text-base shadow-xl shadow-blue-600/20 flex items-center justify-center gap-2">
                             View Courses <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </a>
-                        <a href="#home" class="px-8 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg font-bold text-center hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2">
-                            <i data-lucide="play-circle" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i> Watch Demo
+                        <a href="#home" class="px-8 py-3.5 bg-white border border-slate-200 text-slate-700 rounded-lg font-bold text-center hover:bg-slate-50 transition flex items-center justify-center gap-2">
+                            <i data-lucide="play-circle" class="w-5 h-5 text-blue-600"></i> Watch Demo
                         </a>
                     </div>
                     
-                    <div class="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 flex items-center justify-center lg:justify-start gap-8 fade-in-up delay-300">
-                        <div class="text-left">
-                            <p class="text-3xl font-bold text-slate-900 dark:text-white font-heading">15k+</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Students</p>
+                    <div class="mt-8 md:mt-10 pt-8 border-t border-slate-100 flex flex-wrap items-center justify-center lg:justify-start gap-6 md:gap-8 fade-in-up delay-300">
+                        <div class="text-center lg:text-left">
+                            <p class="text-xl md:text-2xl font-bold text-slate-900 font-heading">Proven Strategy</p>
+                            <p class="text-[10px] md:text-xs text-slate-500 uppercase font-semibold">Backed by Logic</p>
                         </div>
-                        <div class="w-px h-10 bg-slate-200 dark:bg-slate-800"></div>
-                        <div class="text-left">
-                            <p class="text-3xl font-bold text-slate-900 dark:text-white font-heading" id="hero-profit">₹50Cr+</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Profits Made</p>
+                        <div class="w-px h-8 md:h-10 bg-slate-200"></div>
+                        <div class="text-center lg:text-left">
+                            <p class="text-xl md:text-2xl font-bold text-slate-900 font-heading">Live Mentorship</p>
+                            <p class="text-[10px] md:text-xs text-slate-500 uppercase font-semibold">Real-time Learning</p>
                         </div>
-                        <div class="w-px h-10 bg-slate-200 dark:bg-slate-800"></div>
-                        <div class="text-left">
-                            <p class="text-3xl font-bold text-slate-900 dark:text-white font-heading">4.9/5</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Trustpilot</p>
+                        <div class="w-px h-8 md:h-10 bg-slate-200"></div>
+                        <div class="text-center lg:text-left">
+                            <p class="text-xl md:text-2xl font-bold text-slate-900 font-heading">Community First</p>
+                            <p class="text-[10px] md:text-xs text-slate-500 uppercase font-semibold">Learn Together</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="relative fade-in-up delay-200">
-                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-black aspect-video group">
+                <div class="relative fade-in-up delay-200 order-1 lg:order-2">
+                    <div class="relative rounded-xl md:rounded-2xl overflow-hidden shadow-2xl border border-slate-200 bg-black aspect-video group mx-auto max-w-lg lg:max-w-none">
                         <!-- CLICKABLE THUMBNAIL (Links to YouTube) -->
                         <a href="https://youtu.be/psQS2iX5N2k?si=Ws7Ppfe82Tgb-Rsi" target="_blank" class="block w-full h-full relative cursor-pointer">
                             <!-- High Res Thumbnail -->
@@ -251,28 +251,28 @@
                             
                             <!-- YouTube Style Play Button -->
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-20 h-20 bg-red-600/90 hover:bg-red-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(220,38,38,0.5)] group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
-                                    <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
+                                <div class="w-16 h-16 md:w-20 md:h-20 bg-red-600/90 hover:bg-red-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(220,38,38,0.5)] group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
+                                    <i data-lucide="play" class="w-6 h-6 md:w-8 md:h-8 text-white fill-white ml-1"></i>
                                 </div>
                             </div>
 
                             <!-- Bottom Overlay -->
-                            <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                                <p class="text-white font-bold text-sm flex items-center gap-2">
-                                    <i data-lucide="youtube" class="w-5 h-5 text-red-500"></i> Watch on YouTube
+                            <div class="absolute inset-x-0 bottom-0 h-16 md:h-20 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4 md:p-6">
+                                <p class="text-white font-bold text-xs md:text-sm flex items-center gap-2">
+                                    <i data-lucide="youtube" class="w-4 h-4 md:w-5 md:h-5 text-red-500"></i> Watch on YouTube
                                 </p>
                             </div>
                         </a>
                     </div>
                     
-                    <!-- Floating Trust Badge (Moved to bottom-left to avoid blocking controls) -->
-                    <div class="absolute -bottom-5 -left-5 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3 animate-bounce duration-[3000ms] z-20">
-                        <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i data-lucide="play" class="w-5 h-5 text-green-600 dark:text-green-400 fill-green-600 dark:fill-green-400"></i>
+                    <!-- Floating Trust Badge -->
+                    <div class="absolute -bottom-4 -left-2 md:-bottom-5 md:-left-5 bg-white p-3 md:p-4 rounded-xl shadow-xl border border-slate-100 flex items-center gap-3 animate-bounce duration-[3000ms] z-20 hidden sm:flex">
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="play" class="w-4 h-4 md:w-5 md:h-5 text-green-600 fill-green-600"></i>
                         </div>
                         <div>
-                            <p class="text-xs font-bold text-slate-900 dark:text-white">Live Execution</p>
-                            <p class="text-[10px] text-slate-500 dark:text-slate-400">Watch the strategy work</p>
+                            <p class="text-xs font-bold text-slate-900">Live Execution</p>
+                            <p class="text-[10px] text-slate-500">Watch the strategy work</p>
                         </div>
                     </div>
                 </div>
@@ -281,44 +281,44 @@
     </section>
 
     <!-- Why Choose Us -->
-    <section class="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
+    <section class="py-16 md:py-24 bg-white transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <span class="text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-widest mb-2 block">Our Methodology</span>
-                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">Why <span class="text-blue-600 dark:text-blue-400">Trade Lords?</span></h2>
-                <p class="text-slate-600 dark:text-slate-400">Most courses sell dreams. We sell systems. Our curriculum is built on three pillars of professional trading.</p>
+            <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+                <span class="text-blue-600 font-bold text-xs uppercase tracking-widest mb-2 block">Our Methodology</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-4">Why <span class="text-blue-600">Trade Lords?</span></h2>
+                <p class="text-slate-600 text-sm md:text-base">Most courses sell dreams. We sell systems. Our curriculum is built on three pillars of professional trading.</p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
                 <!-- Feature 1 -->
-                <div class="hover-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800">
-                    <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-xl shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-700">
-                        <i data-lucide="clock" class="w-7 h-7 text-blue-600 dark:text-blue-400"></i>
+                <div class="hover-card p-6 md:p-8 rounded-2xl bg-slate-50">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 md:mb-6 border border-slate-100">
+                        <i data-lucide="clock" class="w-6 h-6 md:w-7 md:h-7 text-blue-600"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">30-Min Morning Setup</h3>
-                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    <h3 class="text-lg md:text-xl font-bold text-slate-900 mb-3 font-heading">30-Min Morning Setup</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
                         Perfect for professionals. Our Emerald strategy requires only the first 30 minutes of market open. Get in, take profit, get out.
                     </p>
                 </div>
 
                 <!-- Feature 2 -->
-                <div class="hover-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800">
-                    <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-xl shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-700">
-                        <i data-lucide="shield" class="w-7 h-7 text-blue-600 dark:text-blue-400"></i>
+                <div class="hover-card p-6 md:p-8 rounded-2xl bg-slate-50">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 md:mb-6 border border-slate-100">
+                        <i data-lucide="shield" class="w-6 h-6 md:w-7 md:h-7 text-blue-600"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">The Gauntlet Model</h3>
-                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    <h3 class="text-lg md:text-xl font-bold text-slate-900 mb-3 font-heading">The Gauntlet Model</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
                         Our proprietary position-sizing algorithm designed to protect capital during drawdowns and accelerate growth during winning streaks.
                     </p>
                 </div>
 
                 <!-- Feature 3 -->
-                <div class="hover-card p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 dark:border-slate-800">
-                    <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-xl shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-700">
-                        <i data-lucide="users" class="w-7 h-7 text-blue-600 dark:text-blue-400"></i>
+                <div class="hover-card p-6 md:p-8 rounded-2xl bg-slate-50">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 md:mb-6 border border-slate-100">
+                        <i data-lucide="users" class="w-6 h-6 md:w-7 md:h-7 text-blue-600"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">Sunday Mentorship</h3>
-                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                    <h3 class="text-lg md:text-xl font-bold text-slate-900 mb-3 font-heading">Sunday Mentorship</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
                         We don't leave you alone. Every Sunday, join our live 1-on-1 mentorship calls to review your trades and fix mistakes.
                     </p>
                 </div>
@@ -327,63 +327,67 @@
     </section>
 
     <!-- YouTube / Free Resources Section -->
-    <section id="videos" class="py-24 bg-slate-50 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 transition-colors duration-300">
+    <section id="videos" class="py-24 bg-slate-50 border-y border-slate-200 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div class="max-w-2xl">
-                    <span class="text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-widest mb-2 block">Inside The Trade Room</span>
-                    <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">Watch Us <span class="text-blue-600 dark:text-blue-400">Live</span></h2>
-                    <p class="text-slate-600 dark:text-slate-400">Don't just take our word for it. Watch our mentors execute live trades and break down complex market logic.</p>
+                    <span class="text-blue-600 font-bold text-xs uppercase tracking-widest mb-2 block">Inside The Trade Room</span>
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-4">Watch Us <span class="text-blue-600">Live</span></h2>
+                    <p class="text-slate-600">Don't just take our word for it. Watch our mentors execute live trades and break down complex market logic.</p>
                 </div>
-                <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-red-600 hover:text-red-700 transition">
-                    <i data-lucide="youtube" class="w-5 h-5"></i> Subscribe to Channel
+                <!-- Updated Subscribe Button with Proper YouTube SVG -->
+                <a href="http://www.youtube.com/@tradelordsindia" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 text-white text-sm font-bold rounded shadow-md hover:bg-red-700 transition-colors group">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    Subscribe
                 </a>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Video 1 -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700">
-                    <div class="aspect-video w-full bg-slate-100 dark:bg-slate-900 relative group">
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200">
+                    <div class="aspect-video w-full bg-slate-100 relative group">
                         <!-- Placeholder for YouTube Embed -->
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="absolute inset-0"></iframe>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold uppercase rounded">Live Trade</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold uppercase rounded">Live Trade</span>
                             <span class="text-slate-400 text-xs">14 mins</span>
                         </div>
-                        <h3 class="font-bold text-slate-900 dark:text-white mb-2 line-clamp-2" id="video-title-1">How I Made ₹50,000 in 15 Minutes using the Morning Setup</h3>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">A live breakdown of the Nifty 50 gap-up strategy execution.</p>
+                        <h3 class="font-bold text-slate-900 mb-2 line-clamp-2">How I Made ₹50,000 in 15 Minutes using the Morning Setup</h3>
+                        <p class="text-sm text-slate-500">A live breakdown of the Nifty 50 gap-up strategy execution.</p>
                     </div>
                 </div>
 
                 <!-- Video 2 -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700">
-                    <div class="aspect-video w-full bg-slate-100 dark:bg-slate-900 relative">
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200">
+                    <div class="aspect-video w-full bg-slate-100 relative">
                          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/M7lc1UVf-VE?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="absolute inset-0"></iframe>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-bold uppercase rounded">Tutorial</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold uppercase rounded">Tutorial</span>
                             <span class="text-slate-400 text-xs">22 mins</span>
                         </div>
-                        <h3 class="font-bold text-slate-900 dark:text-white mb-2 line-clamp-2">The Gauntlet Model Explained: Position Sizing Secrets</h3>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">Why fixed risk % is killing your gains. Learn dynamic sizing.</p>
+                        <h3 class="font-bold text-slate-900 mb-2 line-clamp-2">The Gauntlet Model Explained: Position Sizing Secrets</h3>
+                        <p class="text-sm text-slate-500">Why fixed risk % is killing your gains. Learn dynamic sizing.</p>
                     </div>
                 </div>
 
                 <!-- Video 3 -->
-                <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700">
-                    <div class="aspect-video w-full bg-slate-100 dark:bg-slate-900 relative">
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-slate-200">
+                    <div class="aspect-video w-full bg-slate-100 relative">
                          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/LXb3EKWsInQ?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="absolute inset-0"></iframe>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold uppercase rounded">Psychology</span>
+                            <span class="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold uppercase rounded">Psychology</span>
                             <span class="text-slate-400 text-xs">18 mins</span>
                         </div>
-                        <h3 class="font-bold text-slate-900 dark:text-white mb-2 line-clamp-2">Stop Revenge Trading: 3 Rules to Control Emotions</h3>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">The psychological framework used by institutional traders.</p>
+                        <h3 class="font-bold text-slate-900 mb-2 line-clamp-2">Stop Revenge Trading: 3 Rules to Control Emotions</h3>
+                        <p class="text-sm text-slate-500">The psychological framework used by institutional traders.</p>
                     </div>
                 </div>
             </div>
@@ -391,169 +395,309 @@
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" class="py-24 bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-300">
+    <section id="pricing" class="py-16 md:py-24 bg-white relative overflow-hidden transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-16 max-w-2xl mx-auto">
-                <span class="text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-widest mb-2 block">Investment Tiers</span>
-                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">Choose Your <span class="text-blue-600 dark:text-blue-400">Trading Path</span></h2>
-                <p class="text-slate-600 dark:text-slate-400">Transparent pricing. Lifetime access to the academy. No monthly fees.</p>
+            <div class="text-center mb-12 md:mb-16 max-w-2xl mx-auto">
+                <span class="text-blue-600 font-bold text-xs uppercase tracking-widest mb-2 block">Investment Tiers</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-4">Choose Your <span class="text-blue-600">Trading Path</span></h2>
+                <p class="text-slate-600 text-sm md:text-base">Transparent pricing. Lifetime access to the academy. No monthly fees.</p>
             </div>
 
-            <div class="grid lg:grid-cols-3 gap-8 items-start">
+            <div class="grid lg:grid-cols-3 gap-6 md:gap-8 items-start">
                 
-                <!-- EMERALD (Standard) -->
-                <div class="group relative bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/10 flex flex-col h-full">
+                <!-- EMERALD -->
+                <div class="group relative bg-white rounded-3xl p-6 md:p-8 border border-slate-200 hover:border-emerald-500 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/10 flex flex-col h-full">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading">Emerald</h3>
-                        <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl text-emerald-600 dark:text-emerald-400">
+                        <h3 class="text-lg md:text-xl font-bold text-slate-900 font-heading">Emerald</h3>
+                        <div class="p-3 bg-emerald-50 rounded-xl text-emerald-600">
                             <i data-lucide="gem" class="w-6 h-6"></i>
                         </div>
                     </div>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 h-10">Perfect for beginners and working professionals who need a simple system.</p>
+                    <p class="text-slate-500 text-sm mb-6 h-auto md:h-10">Perfect for beginners and working professionals who need a simple system.</p>
                     
                     <div class="mb-6">
                         <div class="flex items-baseline gap-1">
-                            <span class="text-4xl font-extrabold text-slate-900 dark:text-white price-emerald">₹5,999</span>
-                            <span class="text-slate-500 dark:text-slate-400 text-sm font-medium">/ lifetime</span>
+                            <span class="text-4xl font-extrabold text-slate-900">₹5,999</span>
+                            <span class="text-slate-500 text-sm font-medium">/ lifetime</span>
                         </div>
                     </div>
 
-                    <a href="emereld.html" class="block w-full py-4 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all text-center mb-8 shadow-lg shadow-emerald-600/20">
-    Learn More → Emerald Strategy
-</a>
-
+                    <a href="#contact" class="block w-full py-4 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all text-center mb-8 shadow-lg shadow-emerald-600/20">
+                        Get Started
+                    </a>
 
                     <div class="space-y-4 mt-auto">
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">What's Included</p>
                         <ul class="space-y-3">
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400"></i></div>
-                                2 Core Strategies (Swing/Intraday)
+                            <li class="flex items-center gap-3 text-sm text-slate-600">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600"></i></div>
+                                2 Core Strategies
                             </li>
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400"></i></div>
+                            <li class="flex items-center gap-3 text-sm text-slate-600">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600"></i></div>
                                 <strong>30-Min Morning Setup</strong>
                             </li>
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400"></i></div>
+                            <li class="flex items-center gap-3 text-sm text-slate-600">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600"></i></div>
                                 Algo Bot Access
                             </li>
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                                <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600 dark:text-emerald-400"></i></div>
+                            <li class="flex items-center gap-3 text-sm text-slate-600">
+                                <div class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-emerald-600"></i></div>
                                 Community Access
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- RUBY (Premium/Popular) -->
-                <div class="group relative bg-white dark:bg-slate-900 rounded-3xl p-8 border-2 border-red-100 dark:border-red-900/30 hover:border-red-500 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/10 flex flex-col h-full transform lg:-translate-y-4 z-10">
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide shadow-lg whitespace-nowrap">
+                <!-- RUBY -->
+                <div class="group relative bg-white rounded-3xl p-6 md:p-8 border-2 border-red-100 hover:border-red-500 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/10 flex flex-col h-full transform lg:-translate-y-4 z-10 order-first lg:order-none mb-8 lg:mb-0">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-[10px] md:text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide shadow-lg whitespace-nowrap">
                         Most Popular
                     </div>
 
                     <div class="flex justify-between items-center mb-4 mt-2">
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading">Ruby</h3>
-                        <div class="p-3 bg-red-50 dark:bg-red-900/20 rounded-xl text-red-600 dark:text-red-400">
-                            <!-- Using Hexagon as a Gem shape variation or standard Gem -->
-                            <i data-lucide="hexagon" class="w-6 h-6 fill-red-100 dark:fill-red-900/30"></i>
+                        <h3 class="text-lg md:text-xl font-bold text-slate-900 font-heading">Ruby</h3>
+                        <div class="p-3 bg-red-50 rounded-xl text-red-600">
+                            <i data-lucide="hexagon" class="w-6 h-6 fill-red-100"></i>
                         </div>
                     </div>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 h-10">For serious traders ready to scale their capital using institutional models.</p>
+                    <p class="text-slate-500 text-sm mb-6 h-auto md:h-10">For serious traders ready to scale their capital using institutional models.</p>
                     
                     <div class="mb-6">
                         <div class="flex items-baseline gap-1">
-                            <span class="text-5xl font-extrabold text-slate-900 dark:text-white price-ruby">₹12,999</span>
-                            <span class="text-slate-500 dark:text-slate-400 text-sm font-medium">/ lifetime</span>
+                            <span class="text-4xl font-extrabold text-slate-900">₹17,999</span>
+                            <span class="text-slate-500 text-sm font-medium">/ lifetime</span>
                         </div>
                     </div>
 
-                    <a href="ruby.html" class="block w-full py-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all text-center mb-8 shadow-lg shadow-red-600/30">
-    Learn More → Ruby Strategy
-</a>
-
+                    <a href="#contact" class="block w-full py-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all text-center mb-8 shadow-lg shadow-red-600/30">
+                        Join Ruby Tier
+                    </a>
 
                     <div class="space-y-4 mt-auto">
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Everything in Emerald, plus:</p>
                         <ul class="space-y-3">
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300 font-medium">
-                                <div class="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600 dark:text-red-400"></i></div>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 font-medium">
+                                <div class="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600"></i></div>
                                 5 Advanced Strategies
                             </li>
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300 font-medium">
-                                <div class="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600 dark:text-red-400"></i></div>
-                                <strong>The Gauntlet Model (10x Growth)</strong>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 font-medium">
+                                <div class="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600"></i></div>
+                                <strong>The Gauntlet Model (10x)</strong>
                             </li>
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300 font-medium">
-                                <div class="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600 dark:text-red-400"></i></div>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 font-medium">
+                                <div class="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600"></i></div>
                                 Algo Bot Access
                             </li>
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300 font-medium">
-                                <div class="w-5 h-5 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600 dark:text-red-400"></i></div>
+                            <li class="flex items-center gap-3 text-sm text-slate-600 font-medium">
+                                <div class="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-red-600"></i></div>
                                 Professional Trade Journal
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- DIAMOND (Elite) -->
-                <div class="group relative bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10 flex flex-col h-full">
+                <!-- DIAMOND -->
+                <div class="group relative bg-white rounded-3xl p-6 md:p-8 border border-slate-200 hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10 flex flex-col h-full">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading">Diamond</h3>
-                        <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400">
+                        <h3 class="text-lg md:text-xl font-bold text-slate-900 font-heading">Diamond</h3>
+                        <div class="p-3 bg-blue-50 rounded-xl text-blue-600">
                             <i data-lucide="diamond" class="w-6 h-6"></i>
                         </div>
                     </div>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 h-10">Elite 1-on-1 mentorship and full automation for high net-worth goals.</p>
+                    <p class="text-slate-500 text-sm mb-6 h-auto md:h-10">Elite 1-on-1 mentorship and full automation for high net-worth goals.</p>
                     
                     <div class="mb-6">
                         <div class="flex items-baseline gap-1">
-                            <span class="text-4xl font-extrabold text-slate-900 dark:text-white price-diamond">₹19,999</span>
-                            <span class="text-slate-500 dark:text-slate-400 text-sm font-medium">/ lifetime</span>
+                            <span class="text-4xl font-extrabold text-slate-900">₹36,999</span>
+                            <span class="text-slate-500 text-sm font-medium">/ lifetime</span>
                         </div>
                     </div>
 
-                    <a href="diamond.html" class="block w-full py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all text-center mb-8 shadow-lg shadow-blue-600/20">
-    Learn More → Diamond Strategy
-</a>
-
+                    <a href="#contact" class="block w-full py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all text-center mb-8 shadow-lg shadow-blue-600/20">
+                        Apply for Diamond
+                    </a>
 
                     <div class="space-y-4 mt-auto">
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Everything in Ruby, plus:</p>
                         <ul class="space-y-3">
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600 dark:text-blue-400"></i></div>
+                            <li class="flex items-center gap-3 text-sm text-slate-600">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600"></i></div>
                                 All 7 Strategies Included
                             </li>
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600 dark:text-blue-400"></i></div>
-                                <strong>1-on-1 Mentorship</strong> (Sunday)
+                            <li class="flex items-center gap-3 text-sm text-slate-600">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600"></i></div>
+                                <strong>1-on-1 Mentorship</strong>
                             </li>
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600 dark:text-blue-400"></i></div>
+                            <li class="flex items-center gap-3 text-sm text-slate-600">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600"></i></div>
                                 1 Lakh to 1 Cr Roadmap
                             </li>
-                            <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                                <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600 dark:text-blue-400"></i></div>
+                            <li class="flex items-center gap-3 text-sm text-slate-600">
+                                <div class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-3 h-3 text-blue-600"></i></div>
                                 Automated Algo Bot Access
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="reviews" class="py-24 bg-slate-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-heading font-bold text-center text-slate-900 mb-16">What Our Students Say</h2>
             
-            <div class="mt-16 text-center">
-                <p class="text-slate-500 dark:text-slate-400 text-sm flex items-center justify-center gap-2">
-                    <i data-lucide="lock" class="w-4 h-4"></i> Secure payment powered by Razorpay. All prices include GST.
-                </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6 leading-relaxed">"The morning setup is exactly what I needed. I have a full time IT job, so I trade for 30 mins, secure my profits, and close the screen."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-slate-600">AR</div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900">Aryan</p>
+                            <p class="text-xs text-slate-500">Emerald Student</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6 leading-relaxed">"The Gauntlet Model changed everything. I stopped blowing up accounts. My capital has grown 5x in the last 6 months."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-slate-600">TS</div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900">Tushar</p>
+                            <p class="text-xs text-slate-500">Ruby Student</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6 leading-relaxed">"The 1 Lakh to 1 Cr roadmap is real. The Sunday mentorship calls are priceless. Best investment I've made."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-slate-600">RA</div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900">Rahul</p>
+                            <p class="text-xs text-slate-500">Diamond Student</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 md:py-24 bg-white border-t border-slate-100">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-blue-600 font-bold text-xs uppercase tracking-widest mb-2 block">Common Queries</span>
+                <h2 class="text-3xl font-heading font-bold text-slate-900">Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Question 1 -->
+                <div class="group border border-slate-200 rounded-xl overflow-hidden transition-all hover:border-blue-400 bg-slate-50 hover:bg-white">
+                    <details class="w-full">
+                        <summary class="flex justify-between items-center p-5 cursor-pointer list-none">
+                            <span class="font-bold text-slate-800 text-sm md:text-base">How much is the course duration?</span>
+                            <span class="transition-transform group-open:rotate-180">
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i>
+                            </span>
+                        </summary>
+                        <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                            The course is <strong>self-paced</strong> with lifetime access. Most students complete the core video modules within 1 week (approx 12-15 hours of content). However, mastering the setup usually takes about 2-3 weeks of live market observation. You can watch the recordings as many times as you like.
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="group border border-slate-200 rounded-xl overflow-hidden transition-all hover:border-blue-400 bg-slate-50 hover:bg-white">
+                    <details class="w-full">
+                        <summary class="flex justify-between items-center p-5 cursor-pointer list-none">
+                            <span class="font-bold text-slate-800 text-sm md:text-base">What is the refund policy?</span>
+                            <span class="transition-transform group-open:rotate-180">
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i>
+                            </span>
+                        </summary>
+                        <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                            Honestly? You won't want one. Once you see the power of the <strong>Gauntlet Model</strong> and start executing trades with precision, you'll be too busy compounding your profits to think about a refund. However, strictly speaking, due to immediate access to our proprietary IP, all sales are final.
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="group border border-slate-200 rounded-xl overflow-hidden transition-all hover:border-blue-400 bg-slate-50 hover:bg-white">
+                    <details class="w-full">
+                        <summary class="flex justify-between items-center p-5 cursor-pointer list-none">
+                            <span class="font-bold text-slate-800 text-sm md:text-base">Are there custom indicators included?</span>
+                            <span class="transition-transform group-open:rotate-180">
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i>
+                            </span>
+                        </summary>
+                        <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                            Yes! The <strong>Emerald Plan</strong> includes 2 core indicators for trend identification. The <strong>Ruby and Diamond Plans</strong> include our advanced "Institutional Tracker" suite (5 indicators total) which helps spot hidden order blocks and liquidity grabs automatically on TradingView.
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="group border border-slate-200 rounded-xl overflow-hidden transition-all hover:border-blue-400 bg-slate-50 hover:bg-white">
+                    <details class="w-full">
+                        <summary class="flex justify-between items-center p-5 cursor-pointer list-none">
+                            <span class="font-bold text-slate-800 text-sm md:text-base">I am a complete beginner. Is this for me?</span>
+                            <span class="transition-transform group-open:rotate-180">
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i>
+                            </span>
+                        </summary>
+                        <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                            Absolutely. We start from the very basics (Module 1: Market Structure & Candles) before moving to advanced concepts. You do not need any prior finance knowledge.
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="group border border-slate-200 rounded-xl overflow-hidden transition-all hover:border-blue-400 bg-slate-50 hover:bg-white">
+                    <details class="w-full">
+                        <summary class="flex justify-between items-center p-5 cursor-pointer list-none">
+                            <span class="font-bold text-slate-800 text-sm md:text-base">Does the Algo Bot place trades automatically?</span>
+                            <span class="transition-transform group-open:rotate-180">
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i>
+                            </span>
+                        </summary>
+                        <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                            Yes, for Diamond members, the Algo Bot can be linked to supported brokers for fully automated execution. For Emerald and Ruby members, the bot sends high-accuracy signals to your phone/Telegram, which you can execute manually with one click.
+                        </div>
+                    </details>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 dark:bg-black text-white pt-16 pb-24 md:pb-8 transition-colors duration-300"> <!-- Added padding bottom for mobile so bar doesn't cover footer content -->
+    <footer class="bg-slate-900 text-white pt-16 pb-28 md:pb-16 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-12">
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center gap-2 mb-6">
                         <i data-lucide="bar-chart-2" class="w-6 h-6 text-blue-500"></i>
@@ -569,24 +713,26 @@
                     </div>
                 </div>
                 
-                <div>
-                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Company</h4>
-                    <ul class="space-y-3 text-slate-300 text-sm">
-                        <li><a href="#" class="hover:text-blue-400 transition">About Us</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Our Mentors</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Careers</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Contact</a></li>
-                    </ul>
-                </div>
+                <div class="grid grid-cols-2 gap-8 md:col-span-2">
+                    <div>
+                        <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Company</h4>
+                        <ul class="space-y-3 text-slate-300 text-sm">
+                            <li><a href="#" class="hover:text-blue-400 transition">About Us</a></li>
+                            <li><a href="#" class="hover:text-blue-400 transition">Our Mentors</a></li>
+                            <li><a href="#" class="hover:text-blue-400 transition">Careers</a></li>
+                            <li><a href="#" class="hover:text-blue-400 transition">Contact</a></li>
+                        </ul>
+                    </div>
 
-                <div>
-                    <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Legal</h4>
-                    <ul class="space-y-3 text-slate-300 text-sm">
-                        <li><a href="#" class="hover:text-blue-400 transition">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Refund Policy</a></li>
-                        <li><a href="#" class="hover:text-blue-400 transition">Risk Disclosure</a></li>
-                    </ul>
+                    <div>
+                        <h4 class="font-bold mb-6 text-sm uppercase tracking-wider text-slate-500">Legal</h4>
+                        <ul class="space-y-3 text-slate-300 text-sm">
+                            <li><a href="#" class="hover:text-blue-400 transition">Terms of Service</a></li>
+                            <li><a href="#" class="hover:text-blue-400 transition">Privacy Policy</a></li>
+                            <li><a href="#" class="hover:text-blue-400 transition">Refund Policy</a></li>
+                            <li><a href="#" class="hover:text-blue-400 transition">Risk Disclosure</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
@@ -598,40 +744,40 @@
     </footer>
 
     <!-- Flash Sale Sticky Bar (Replaces old Emerald Popup) -->
-    <div id="flash-sale-bar" class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 z-40 border-t border-emerald-100 dark:border-emerald-900 shadow-[0_-5px_25px_rgba(16,185,129,0.15)] transform translate-y-full transition-transform duration-500 ease-out">
+    <div id="flash-sale-bar" class="fixed bottom-0 left-0 w-full bg-white z-40 border-t border-emerald-100 shadow-[0_-5px_25px_rgba(16,185,129,0.15)] transform translate-y-full transition-transform duration-500 ease-out">
         <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
+            <div class="flex flex-row items-center justify-between gap-2 md:gap-8">
                 
                 <!-- Left: Price & Info -->
-                <div class="flex items-center gap-6 md:gap-8 w-full md:w-auto justify-between md:justify-start">
+                <div class="flex items-center gap-3 md:gap-8 flex-1">
                     <div class="flex items-center gap-3">
                         <!-- Emerald Icon -->
-                        <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 hidden md:block">
+                        <div class="p-2 bg-emerald-100 rounded-lg text-emerald-600 hidden md:block">
                             <i data-lucide="gem" class="w-6 h-6"></i>
                         </div>
-                        <div class="flex items-baseline gap-3">
-                            <span class="text-slate-400 text-lg font-bold relative price-strikethrough">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-0 md:gap-3">
+                            <span class="text-xs md:text-lg text-slate-400 font-bold relative price-strikethrough w-fit">
                                 ₹12,000
                                 <div class="absolute top-1/2 left-0 w-full h-0.5 bg-red-500 -rotate-6 transform"></div>
                             </span>
-                            <span class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-heading price-bar">₹5,999</span>
+                            <span class="text-xl md:text-3xl font-extrabold text-emerald-600 font-heading price-bar">₹5,999</span>
                         </div>
                     </div>
                     
-                    <div class="hidden md:block h-8 w-px bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="hidden md:block h-8 w-px bg-slate-200"></div>
                     
-                    <div class="text-sm font-medium text-slate-600 dark:text-slate-300">
-                        <span class="font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded border border-emerald-100 dark:border-emerald-900/50">Emerald Plan</span> Special Deal
+                    <div class="text-xs md:text-sm font-medium text-slate-600 hidden sm:block">
+                        <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded border border-emerald-100">Emerald Plan</span> <span id="sticky-bar-text">Special Deal</span>
                     </div>
                 </div>
 
                 <!-- Right: CTA -->
-                <div class="flex items-center gap-4 w-full md:w-auto">
-                    <a href="#pricing" class="flex-1 md:flex-none bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-bold px-8 py-3 rounded-full shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all transform hover:-translate-y-0.5 text-sm uppercase tracking-wider text-center">
+                <div class="flex items-center gap-2 md:gap-4">
+                    <a href="#pricing" class="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-bold px-4 md:px-8 py-2 md:py-3 rounded-full shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all transform hover:-translate-y-0.5 text-xs md:text-sm uppercase tracking-wider text-center whitespace-nowrap">
                         Claim Now
                     </a>
-                    <button onclick="document.getElementById('flash-sale-bar').classList.add('translate-y-full')" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-                        <i data-lucide="x" class="w-5 h-5"></i>
+                    <button onclick="document.getElementById('flash-sale-bar').classList.add('translate-y-full')" class="p-1 md:p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+                        <i data-lucide="x" class="w-4 h-4 md:w-5 md:h-5"></i>
                     </button>
                 </div>
             </div>
@@ -639,77 +785,87 @@
     </div>
 
     <!-- WhatsApp Float (Adjusted z-index to sit above bar) -->
-    <a href="https://wa.me/919359361016?text=Hello%20Sir%20i%20have%20question%20related%20to%20the%20courses" target="_blank" class="whatsapp-float w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-xl hover:scale-110 transition-transform z-50 fixed bottom-28 md:bottom-24 right-6">
-        <svg viewBox="0 0 24 24" class="w-8 h-8 fill-white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    <a href="https://wa.me/919359361016?text=Hello%20Sir%20i%20have%20question%20related%20to%20the%20courses" target="_blank" class="whatsapp-float w-12 h-12 md:w-14 md:h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-xl hover:scale-110 transition-transform z-50 fixed bottom-24 md:bottom-28 right-4 md:right-6">
+        <svg viewBox="0 0 24 24" class="w-6 h-6 md:w-8 md:h-8 fill-white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
     </a>
 
     <script>
         lucide.createIcons();
         
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('open');
+        }
+
         // Show Flash Sale Bar after delay
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const bar = document.getElementById('flash-sale-bar');
-                bar.classList.remove('translate-y-full');
+                if(bar) bar.classList.remove('translate-y-full');
             }, 1500);
+            
+            // Initialize Market Data
+            updateMarketData();
         });
 
-        // Market Toggle Logic
-        function switchMarket(market) {
-            const btns = document.querySelectorAll('.market-btn');
-            const html = document.documentElement;
-            btns.forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + market).classList.add('active');
-
-            const marketTexts = document.querySelectorAll('.market-text');
-            const priceEmerald = document.querySelectorAll('.price-emerald');
-            const priceRuby = document.querySelectorAll('.price-ruby');
-            const priceDiamond = document.querySelectorAll('.price-diamond');
-            const profitHero = document.getElementById('hero-profit');
+        function updateMarketData() {
+            // 1. Calculate Previous Trading Day
+            const today = new Date();
+            let prevDate = new Date(today);
             
-            // Bottom Bar
-            const priceBar = document.querySelector('.price-bar');
-            const priceStrikethrough = document.querySelector('.price-strikethrough');
+            // Subtract 1 day initially
+            prevDate.setDate(today.getDate() - 1);
 
-            if (market === 'indian') {
-                // Disable Dark Mode
-                html.classList.remove('dark');
-
-                marketTexts.forEach(el => el.innerHTML = 'Nifty & BankNifty');
-                priceEmerald.forEach(el => el.innerHTML = '₹5,999');
-                priceRuby.forEach(el => el.innerHTML = '₹12,999');
-                priceDiamond.forEach(el => el.innerHTML = '₹19,999');
-                profitHero.innerHTML = '₹50Cr+';
-                
-                // Bottom Bar
-                if(priceBar) priceBar.innerHTML = '₹5,999';
-                if(priceStrikethrough) {
-                    priceStrikethrough.innerHTML = '₹12,000 <div class="absolute top-1/2 left-0 w-full h-0.5 bg-red-500 -rotate-6 transform"></div>';
-                }
-                
-                // Update Video Titles to INR if needed or keep generic
-                document.getElementById('video-title-1').innerText = "How I Made ₹50,000 in 15 Minutes using the Morning Setup";
-
-            } else {
-                // Enable Dark Mode
-                html.classList.add('dark');
-
-                // Forex Market Values
-                marketTexts.forEach(el => el.innerHTML = 'XAUUSD & EURUSD');
-                priceEmerald.forEach(el => el.innerHTML = '$149');
-                priceRuby.forEach(el => el.innerHTML = '$299');
-                priceDiamond.forEach(el => el.innerHTML = '$499');
-                profitHero.innerHTML = '$6M+';
-
-                // Bottom Bar
-                if(priceBar) priceBar.innerHTML = '$149';
-                if(priceStrikethrough) {
-                    priceStrikethrough.innerHTML = '$300 <div class="absolute top-1/2 left-0 w-full h-0.5 bg-red-500 -rotate-6 transform"></div>';
-                }
-                
-                // Update Video Titles
-                document.getElementById('video-title-1').innerText = "How I Made $600 in 15 Minutes using the Morning Setup";
+            // If it's Sunday (0), go back to Friday (subtract 2 more days)
+            if (prevDate.getDay() === 0) {
+                prevDate.setDate(prevDate.getDate() - 2);
+            } 
+            // If it's Saturday (6), go back to Friday (subtract 1 more day)
+            else if (prevDate.getDay() === 6) {
+                prevDate.setDate(prevDate.getDate() - 1);
             }
+
+            // Format Date: "08 Dec 2025"
+            const options = { day: '2-digit', month: 'short', year: 'numeric' };
+            const dateString = prevDate.toLocaleDateString('en-GB', options);
+
+            // 2. Define Realistic Closing Prices (Mock Data for 2025 context)
+            // Since previous day data is static (market closed), we don't fluctuate these numbers randomly.
+            const indices = [
+                { name: 'NIFTY 50', price: 24850.45, change: 125.30, percent: 0.51 },
+                { name: 'BANK NIFTY', price: 52400.15, change: -140.50, percent: -0.27 },
+                { name: 'SENSEX', price: 81200.80, change: 450.20, percent: 0.56 },
+                { name: 'BANKEX', price: 58900.60, change: -85.10, percent: -0.14 },
+                { name: 'MIDCAP NIFTY', price: 12150.30, change: 210.45, percent: 1.76 }
+            ];
+
+            const tickerContainer = document.getElementById('market-ticker');
+            
+            // 3. Generate HTML
+            let html = '';
+            // Create two sets for seamless looping
+            for(let i=0; i<2; i++) {
+                // Add Date Badge at start
+                html += `<span class="mx-6 text-slate-400 bg-slate-700 px-2 py-0.5 rounded text-[9px] border border-slate-600">CLOSING: ${dateString}</span>`;
+                
+                indices.forEach(index => {
+                    const colorClass = index.change >= 0 ? 'text-green-400' : 'text-red-400';
+                    const arrow = index.change >= 0 ? '▲' : '▼';
+                    const sign = index.change >= 0 ? '+' : '';
+                    
+                    html += `
+                        <span class="mx-4 md:mx-8 flex items-center gap-2">
+                            <span class="text-white">${index.name}</span>
+                            <span class="${colorClass}">${index.price.toLocaleString('en-IN', {minimumFractionDigits: 2})}</span>
+                            <span class="${colorClass} text-[9px] opacity-80">(${sign}${index.change}) ${arrow} ${Math.abs(index.percent)}%</span>
+                        </span>
+                        <span class="mx-4 md:mx-8 text-slate-600">|</span>
+                    `;
+                });
+            }
+            
+            if(tickerContainer) tickerContainer.innerHTML = html;
         }
     </script>
 </body>
