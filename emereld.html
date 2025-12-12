@@ -88,6 +88,29 @@
             linear-gradient(to bottom, #1e293b 1px, transparent 1px);
         }
 
+        /* Ticker Animation */
+        .ticker-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+        .ticker-wrapper {
+            display: inline-block;
+            animation: ticker-scroll 30s linear infinite;
+        }
+        .ticker-item {
+            display: inline-block;
+            padding: 0 1.5rem;
+        }
+        @keyframes ticker-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .ticker-container:hover .ticker-wrapper {
+            animation-play-state: paused;
+        }
+
         /* Smooth Fade In */
         .fade-in-up {
             animation: fadeInUp 0.8s ease-out forwards;
@@ -176,10 +199,37 @@
 </head>
 <body class="antialiased bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 transition-colors duration-300">
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-emerald-900 dark:bg-black text-emerald-100 py-2 text-xs font-medium text-center border-b border-emerald-800 dark:border-slate-900">
-        <span class="inline-block animate-pulse w-2 h-2 rounded-full bg-emerald-400 mr-2"></span>
-        Foundation Batch: <span class="text-white font-bold">Enrollment Closing Soon</span>
+    <!-- Top Market Ticker Bar -->
+    <div class="bg-emerald-950 dark:bg-black text-slate-300 py-2 text-xs font-medium border-b border-emerald-900 dark:border-slate-900">
+        <div class="ticker-container">
+            <div class="ticker-wrapper">
+                <!-- Data Block 1 -->
+                <span class="ticker-item">NIFTY 50 <span class="text-emerald-400 font-bold">24,852.40 ▲ 125.50</span></span>
+                <span class="ticker-item">BANK NIFTY <span class="text-red-400 font-bold">52,380.10 ▼ 85.20</span></span>
+                <span class="ticker-item">SENSEX <span class="text-emerald-400 font-bold">81,240.05 ▲ 350.00</span></span>
+                <span class="ticker-item text-slate-500">|</span>
+                <span class="ticker-item">HDFCBANK <span class="text-emerald-400 font-bold">1,652.00 ▲ 12.00</span></span>
+                <span class="ticker-item">RELIANCE <span class="text-emerald-400 font-bold">3,025.50 ▲ 15.50</span></span>
+                <span class="ticker-item">ICICIBANK <span class="text-red-400 font-bold">1,240.00 ▼ 5.00</span></span>
+                <span class="ticker-item">SBIN <span class="text-emerald-400 font-bold">855.20 ▲ 8.00</span></span>
+                <span class="ticker-item">INFY <span class="text-emerald-400 font-bold">1,890.00 ▲ 22.00</span></span>
+                <span class="ticker-item">AXISBANK <span class="text-red-400 font-bold">1,180.00 ▼ 10.00</span></span>
+                <span class="ticker-item">TCS <span class="text-emerald-400 font-bold">4,250.00 ▲ 45.00</span></span>
+                
+                <!-- Duplicate Data Block for Seamless Loop -->
+                <span class="ticker-item">NIFTY 50 <span class="text-emerald-400 font-bold">24,852.40 ▲ 125.50</span></span>
+                <span class="ticker-item">BANK NIFTY <span class="text-red-400 font-bold">52,380.10 ▼ 85.20</span></span>
+                <span class="ticker-item">SENSEX <span class="text-emerald-400 font-bold">81,240.05 ▲ 350.00</span></span>
+                <span class="ticker-item text-slate-500">|</span>
+                <span class="ticker-item">HDFCBANK <span class="text-emerald-400 font-bold">1,652.00 ▲ 12.00</span></span>
+                <span class="ticker-item">RELIANCE <span class="text-emerald-400 font-bold">3,025.50 ▲ 15.50</span></span>
+                <span class="ticker-item">ICICIBANK <span class="text-red-400 font-bold">1,240.00 ▼ 5.00</span></span>
+                <span class="ticker-item">SBIN <span class="text-emerald-400 font-bold">855.20 ▲ 8.00</span></span>
+                <span class="ticker-item">INFY <span class="text-emerald-400 font-bold">1,890.00 ▲ 22.00</span></span>
+                <span class="ticker-item">AXISBANK <span class="text-red-400 font-bold">1,180.00 ▼ 10.00</span></span>
+                <span class="ticker-item">TCS <span class="text-emerald-400 font-bold">4,250.00 ▲ 45.00</span></span>
+            </div>
+        </div>
     </div>
 
     <!-- Navbar -->
@@ -216,9 +266,7 @@
     <!-- Hero Section -->
     <section class="relative pt-20 pb-32 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-300">
         <div class="absolute inset-0 bg-grid opacity-100 dark:opacity-10"></div>
-        <!-- Green Gradient Blobs for Emerald Theme -->
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-100 dark:bg-emerald-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob"></div>
-        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-100 dark:bg-teal-900/20 rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-normal filter animate-blob animation-delay-2000"></div>
+        <!-- REMOVED: Green Gradient Blobs for cleaner look -->
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center max-w-4xl mx-auto">
@@ -341,7 +389,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">THE HIDDEN SPY</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
-                        Detect the unseen moves of smart money. This custom indicator scans for volume divergences and hidden momentum shifts that standard candles miss.
+                        Detect the unseen moves of smart money. This strategy scans for volume divergences and hidden momentum shifts that standard candles miss.
                     </p>
                     <ul class="space-y-3">
                         <li class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
@@ -351,6 +399,111 @@
                             <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Alerts directly to phone
                         </li>
                     </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Live Execution Archives (Proofs) -->
+    <section class="py-24 bg-slate-50 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 block">Visual Evidence</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">Execution <span class="text-emerald-600 dark:text-emerald-400">Archives</span></h2>
+                <p class="text-slate-600 dark:text-slate-400">Real setups. Real entries. Click images to inspect details.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Proof 1 -->
+                <div class="hover-card bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm group cursor-pointer border border-slate-100 dark:border-slate-800" onclick="openModal('https://i.ibb.co/QF5khPD0/BANKNIFTY-2025-12-12-10-46-33-b6aad.png')">
+                    <div class="aspect-video bg-slate-200 dark:bg-slate-800 relative flex items-center justify-center overflow-hidden">
+                        <img src="https://i.ibb.co/QF5khPD0/BANKNIFTY-2025-12-12-10-46-33-b6aad.png" alt="Bank Nifty Sniper Strategy Chart" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                            <i data-lucide="maximize-2" class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg"></i>
+                        </div>
+                        <div class="absolute top-3 right-3 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg flex items-center gap-1">
+                            <i data-lucide="trending-up" class="w-3 h-3"></i> +61% ROI
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-0 leading-relaxed">
+                            Precise signal generated by the <span class="font-bold text-slate-900 dark:text-white">BNF Sniper Indicator</span>. The algorithm automatically detected the institutional buying zone.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Proof 2 -->
+                <div class="hover-card bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm group cursor-pointer border border-slate-100 dark:border-slate-800" onclick="openModal('https://i.ibb.co/sz7d5fR/Screenshot-2025-12-12-104210.png')">
+                    <div class="aspect-video bg-slate-200 dark:bg-slate-800 relative flex items-center justify-center overflow-hidden">
+                        <!-- Replaced placeholder with the provided image for Hidden Spy -->
+                        <img src="https://i.ibb.co/sz7d5fR/Screenshot-2025-12-12-104210.png" alt="Hidden Spy Strategy Chart" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                            <i data-lucide="maximize-2" class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg"></i>
+                        </div>
+                        <div class="absolute top-3 right-3 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg flex items-center gap-1">
+                            <i data-lucide="crosshair" class="w-3 h-3"></i> +55 Pts
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-0 leading-relaxed">
+                            The <span class="font-bold text-slate-900 dark:text-white">Hidden Spy Strategy</span> excels at pinpointing accurate trend reversals. Engineered for high-asymmetry trades.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Proof 3 -->
+                <div class="hover-card bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm group cursor-pointer border border-slate-100 dark:border-slate-800" onclick="openModal('https://i.ibb.co/tPQ2c9bk/Screenshot-2025-12-12-104514.png')">
+                    <div class="aspect-video bg-slate-200 dark:bg-slate-800 relative flex items-center justify-center overflow-hidden">
+                        <img src="https://i.ibb.co/tPQ2c9bk/Screenshot-2025-12-12-104514.png" alt="BNF Sniper Daily Setup" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                            <i data-lucide="maximize-2" class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg"></i>
+                        </div>
+                        <div class="absolute top-3 right-3 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded">
+                            <i data-lucide="bar-chart" class="w-3 h-3 inline mr-1"></i> 1:4 RR
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-0 leading-relaxed">
+                            Get <span class="font-bold text-slate-900 dark:text-white">100+ points Daily</span> with this setup of BNF Sniper. Consistent, high-probability entries.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Indicator Feature -->
+    <section class="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="text-emerald-600 dark:text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 block">Included In Your Arsenal</span>
+            <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-6">Don't Guess. <span class="text-emerald-600 dark:text-emerald-400">Just Follow.</span></h2>
+            <p class="text-lg text-slate-600 dark:text-slate-400 mb-12">
+                Why analyze charts for hours when our code can do it in milliseconds?
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="mb-4 p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg inline-block text-emerald-600 dark:text-emerald-400">
+                        <i data-lucide="trending-up" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-2">Emerald Trend Catcher</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Automatically identifies the trend direction. Green background = Bullish only. Red background = Bearish only.</p>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="mb-4 p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg inline-block text-emerald-600 dark:text-emerald-400">
+                        <i data-lucide="tag" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-2">Buy/Sell Labels</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Prints explicit "BUY" and "SELL" labels on your chart when the strategy conditions are met. Zero ambiguity.</p>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div class="mb-4 p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg inline-block text-emerald-600 dark:text-emerald-400">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-2">Trailing Stop-Loss</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Visual lines that show you exactly where to move your stop-loss to lock in profits as the trade moves in your favor.</p>
                 </div>
             </div>
         </div>
@@ -397,8 +550,8 @@
                             <i data-lucide="activity" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
                         </div>
                         <div class="flex-1">
-                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Module 3: Deploying THE HIDDEN SPY</h4>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">How to access and install our private script on TradingView. Setting up automated alerts.</p>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Module 3: Executing THE HIDDEN SPY</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Mastering the reversal strategy. How to identify high-probability zones and execute trades with precision.</p>
                         </div>
                         <span class="text-xs font-bold text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-600 px-2 py-1 rounded">30 Mins</span>
                     </div>
@@ -408,13 +561,13 @@
                 <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border-l-4 border-l-emerald-500 border border-slate-200 dark:border-slate-700">
                     <div class="flex items-start gap-4">
                         <div class="mt-1 p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                            <i data-lucide="trophy" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+                            <i data-lucide="trending-up" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
                         </div>
                         <div class="flex-1">
-                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Module 4: Live Execution Drills</h4>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Watch the mentor take trades live using the Emerald system. Unedited wins and losses.</p>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white">Module 4: Wealth Preservation & Scaling</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Learn how to compound your small account into a large capital base safely. We cover withdrawal strategies and long-term portfolio management.</p>
                         </div>
-                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-600 px-2 py-1 rounded">120 Mins</span>
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-600 px-2 py-1 rounded">60 Mins</span>
                     </div>
                 </div>
             </div>
@@ -467,10 +620,12 @@
                     </li>
                 </ul>
 
-                <button class="block w-full py-4 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all text-center shadow-lg shadow-emerald-600/20">
-                    Initialize Payment
-                </button>
-                <p class="text-xs text-center text-slate-400 mt-4 flex justify-center items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Secure 256-bit SSL Encrypted Payment</p>
+                <a href="https://wa.me/919359361016?text=I%20want%20to%20enroll%20in%20EMERALD%20COURSE" target="_blank" class="block w-full py-4 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all text-center shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i> Generate Profit
+                </a>
+                <p class="text-xs text-center text-emerald-600 dark:text-emerald-400 mt-4 font-bold uppercase tracking-widest">
+                    Direct WhatsApp Link for Instant Access
+                </p>
             </div>
         </div>
     </section>
@@ -527,7 +682,7 @@
                         </div>
                     </div>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 leading-relaxed">
-                        "The <span class="text-slate-900 dark:text-white font-bold">Hidden Spy indicator</span> is almost unfair. It painted a 'Sell' right at the top yesterday when everyone else was buying the breakout."
+                        "The <span class="text-slate-900 dark:text-white font-bold">Hidden Spy strategy</span> is almost unfair. It painted a 'Sell' right at the top yesterday when everyone else was buying the breakout."
                     </p>
                     <div class="text-xs text-slate-400 pt-4 border-t border-slate-100 dark:border-slate-800 font-mono">
                         Tool: Hidden Spy • Status: Profitable
@@ -601,13 +756,59 @@
             </div>
             
             <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-xs">
-                <p>&copy; 2024 Trade Lords Academy. All rights reserved.</p>
+                <p>&copy; 2025 Trade Lords Academy. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Fullscreen Image Modal -->
+    <div id="image-modal" class="fixed inset-0 z-[100] bg-black/95 hidden items-center justify-center opacity-0 transition-opacity duration-300 p-4" onclick="closeModal()">
+        <button class="absolute top-4 right-4 text-white hover:text-emerald-400 transition-colors z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <img id="modal-img" src="" alt="Full size preview" class="max-w-full max-h-full rounded-lg shadow-2xl transform scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
+    </div>
+
     <script>
         lucide.createIcons();
+
+        // Image Modal Logic
+        function openModal(imageSrc) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            
+            modalImg.src = imageSrc;
+            modal.classList.remove('hidden');
+            
+            // Trigger transition
+            requestAnimationFrame(() => {
+                modal.classList.remove('opacity-0');
+                modalImg.classList.remove('scale-95');
+                modalImg.classList.add('scale-100');
+            });
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            
+            modal.classList.add('opacity-0');
+            modalImg.classList.remove('scale-100');
+            modalImg.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+            }, 300);
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
